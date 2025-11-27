@@ -1,0 +1,16 @@
+Sitemap: https://www.parisbakery.in/sitemap.xml
+User-agent: *
+Disallow: /android/
+Disallow: /App_Code/
+Disallow: /App_Data/
+Disallow: /Bin/
+Disallow: /css/
+Disallow: /images/
+Disallow: /images2/
+Disallow: /js/
+Disallow: /libraries/
+Disallow: /menupic/
+Disallow: /ONLINE/
+Disallow: /ONLINE1/
+Disallow: /script/
+Disallow: /styles/

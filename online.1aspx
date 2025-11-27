@@ -1,0 +1,220 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="online.aspx.cs" Inherits="spark" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>VIEW PREMIUM DELICACIES</title>
+    <link href="sparxdata.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <link href="css/sweetalert.css" rel="stylesheet" />
+    <script src="js/numeric.js"></script>
+
+    <script>
+
+        function getCookie(name) {
+            var dc = document.cookie;
+            var prefix = name + "=";
+            var begin = dc.indexOf("; " + prefix);
+            if (begin == -1) {
+                begin = dc.indexOf(prefix);
+                if (begin != 0) return null;
+            }
+            else {
+                begin += 2;
+                var end = document.cookie.indexOf(";", begin);
+                if (end == -1) {
+                    end = dc.length;
+                }
+            }
+            return decodeURI(dc.substring(begin + prefix.length, end));
+        }
+
+        $(document).ready(function () {
+
+            var myCookie = getCookie("mypinverified");
+            if (myCookie == null) {
+                swal({
+                    title: "Verify Your PINCODE !",
+                    text: "Check PINCODE if You want Home Delivery !!!",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonColor: "#a30f89",
+                    animation: "slide-from-top",
+                    confirmButtonText: "Verify My Pincode",
+                    cancelButtonText: "Cancel",
+                    inputPlaceholder: "Enter Pincode",
+                    customClass: "numeric"
+                },
+                    function (inputValue) {
+                        if (inputValue === false) return false;
+
+                        if (inputValue === "" || inputValue.length < 6 || inputValue.length > 6) {
+                            swal.showInputError("Please Enter Correct PinCode !!");
+                            return false
+                        }
+
+                        var string = "751001, 751022, 751009, 751010, 751005, 751007, 751020, 751006, 751002, 751011, 760001, 761005, 761001, 761008, 760003, 760002, 760004, 760005, 760008, 760010, 758002, 758001, 758014, 769001, 769004, 769015, 769007, 769012, 751018, 751014, 751025, 751017, 751015, 751004, 751003, 751030, 751012, 751008, 756001, 756002, 756003, 755019, 755020, 752002, 752001, 752003, 751024, 754132, 754005, 751021, 753001, 751013, 751023, 753006, 753003, 753008, 753004, 753015, 753009, 754004, 753002, 753010, 753014, 754006, 753013, 753012, 753007, 756100, 756101, 700074, 700076, 700073, 711106, 711105, 711104, 711107, 711108, 711109,700059,700156,700157,700158,700017,700055,700056,700057,700058,768001,768002,768003,768004",
+                            substring = inputValue;
+                        var vali = string.includes(substring);
+                        document.cookie = "mypinverified=yes";
+                        if (vali === true) {
+                            swal("Great !!!", " We can  deliver at this Pincode : " + inputValue + ".\n\nYou can also Pickup From Our Outlet", "success");
+                        }
+                        else {
+                            swal("OOPS !!!", "We cannot deliver to pincode : " + inputValue + ".\n\nBut you can still Pickup From Our Outlet", "error");
+                        }
+
+                    });
+            }
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $(".numeric").numeric();
+        });
+    </script>
+    <style>
+        img.lazy {
+            width: 200px;
+            height: 200px;
+            display: block;
+            /*optional way, set loading as background */
+            background-image: url('images/balls.gif');
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+
+        #xmenu {
+            background-color: #ffffff;
+            -webkit-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            -moz-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            -ms-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+        }
+
+        .xcontent:hover {
+            background-color: #ffffff;
+            -webkit-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            -moz-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            -ms-box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+            box-shadow: 0px 0px 12px 0px rgba(179,175,179,0.37);
+        }
+
+        #Button1 {
+            height: 270px;
+            width: 221px;
+        }
+
+        .links {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="header" style="width: 100%; height: 120px; background-color: #f5b569">
+            <div style="width: 1300px; height: 120px; margin: 0 auto;">
+                <div style="background-position-y: -20px; float: left; width: 250px; height: 120px; background-image: url('images/logopnline2.png'); background-repeat: no-repeat;">
+                    <a href="Default.aspx" style="display: block; height: 118px;"></a>
+                </div>
+                <div style="float: left; height: 120px; width: 36px;">
+                </div>
+
+                <div style="float: right; width: 954px; height: 120px;">
+                    <div style="float: right; height: 120px; width: 120px; background-image: url('images/cart.png'); background-repeat: no-repeat;">
+                        <div style="height: 70px">
+                        </div>
+                        <div style="height: 34px; text-align: center; line-height: 34px; color: #ffffff; font-size: small; font-weight: bold;">
+                            <a class="links" style="display: block;" href="sparkcart.aspx"><span style="color: #ffffff; text-decoration: none;" id="cartqty" runat="server">0</span></a>
+                        </div>
+                    </div>
+                    <div style="float: right; height: 120px; width: 10px;">
+                    </div>
+                    <div style="float: right; height: 90px; width: 1px; margin-top: 20px; background-color: #3e3c3e">
+                    </div>
+                    <div style="float: right; height: 120px; width: 20px;">
+                    </div>
+                    <div style="float: right; height: 120px; text-align: right; line-height: 120px; color: #ffffff; font-size: medium; font-weight: bold;" id="loginlink" runat="server">
+                        <a class="links" style="display: block;" href="#"><span style="color: #3e3c3e; text-decoration: none;">Welcome , Guest | Login</span></a>
+                    </div>
+
+                    <div style="float: right; height: 120px; width: 100px; text-align: left; line-height: 120px; color: #ffffff; font-size: medium; font-weight: bold;" id="Div3" runat="server">
+                        <a class="links" style="display: block;" href="contact.aspx"><span style="color: #3e3c3e; text-decoration: none;">Contact</span></a>
+                    </div>
+
+                    <div style="float: right; height: 120px; width: 100px; text-align: left; line-height: 120px; color: #ffffff; font-size: medium; font-weight: bold;" id="Div2" runat="server">
+                        <a class="links" style="display: block;" href="about.aspx"><span style="color: #3e3c3e; text-decoration: none;">About Us</span></a>
+                    </div>
+
+                    <div style="float: right; height: 120px; width: 100px; text-align: left; line-height: 120px; color: #ffffff; font-size: medium; font-weight: bold;" id="Div1" runat="server">
+                        <a class="links" style="display: block;" href="default.aspx"><span style="color: #3e3c3e; text-decoration: none;">Home</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; height: 20px;">
+        </div>
+        <div id="midpart" style="width: 100%;">
+            <div style="width: 1300px; min-height: 550px; margin: 0 auto;">
+                <div style="float: left; width: 250px; height: 500px;" id="xmenu">
+                    <div style="height: 50px; line-height: 60px; padding-left: 20px; color: #3E3C3E; font-size: 12px; font-weight: bold;">TOP CATEGORIES</div>
+                    <div style="height: 10px; background-image: url('images/section-seprator-1.png'); background-repeat: no-repeat; margin-left: 20px;"></div>
+                    <div style="">
+                        <div id='flyout_menu'>
+                            <ul>
+                                <li><a href='#' style="cursor: default"><span>BAKER'S TREAT</span></a>
+                                    <ul>
+                                        <li><a href='spark.aspx?xdt=BUN'><span>BUN</span></a>
+                                        </li>
+                                        <li><a href='spark.aspx?xdt=DRY CAKE'><span>DRY CAKE</span></a>
+                                        </li>
+                                        <li><a href='spark.aspx?xdt=KULCHA'><span>KULCHA</span></a>
+                                        </li>
+                                        <li><a href='spark.aspx?xdt=LOAF'><span>LOAF</span></a>
+                                        </li>
+                                        <li><a href='spark.aspx?xdt=MUFFIN'><span>MUFFIN</span></a>
+                                        </li>
+                                        <li><a href='spark.aspx?xdt=REGULAR BREAD'><span>REGULAR BREAD</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href='#' style="cursor: default"><span>FORTUNE COOKIES</span></a>
+                                    <ul>
+                                        <li><a href='#'><span>Product 1</span></a>
+                                        </li>
+                                        <li><a href='#'><span>Product 2</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href='#' style="cursor: default"><span>PREMIUM GIFT PACKS</span></a><ul>
+                                    <li><a href='#'><span>Product 1</span></a>
+                                    </li>
+                                    <li><a href='#'><span>Product 2</span></a>
+                                    </li>
+                                </ul>
+                                </li>
+                                <li><a href='#' style="cursor: default"><span>TASTY NAMKEENS </span></a>
+                                    <ul>
+                                        <li><a href='#'><span>Product 1</span></a>
+                                        </li>
+                                        <li><a href='#'><span>Product 2</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="float: right; width: 1030px; background-color: #ffffff;" id="xdata">
+                    <div style="width: 1000px; height: 500px; float: right; background-image: url('images/online.png'); background-repeat: no-repeat;"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

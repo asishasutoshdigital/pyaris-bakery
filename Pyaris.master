@@ -1,0 +1,1460 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Pyaris.master.cs" Inherits="Pyaris" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WGNXTXN4NG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WGNXTXN4NG');
+    </script>
+    <style>
+        .pincode-select {
+    display: flex;
+    flex-direction: column;
+    max-width: 240px;
+    width: 100%;
+    margin: 42px auto 0 350px;
+    font-family: sans-serif;
+}
+
+.custom-dropdown {
+    position: relative;
+    background-color: #e62263;
+    padding: 7px 8px 8px 36px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 0;
+}
+
+.custom-dropdown input {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #e62263;
+    font-size: 12px;
+    outline: none;
+    color: white;
+    background: transparent;
+}
+.custom-dropdown input:hover{
+    cursor:pointer;
+}
+.custom-dropdown .icon {
+    position: absolute;
+    left: 12px;
+    top: 80%;
+    transform: translateY(-10%);
+    color: white;
+    pointer-events: none;
+}
+
+.custom-dropdown input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+}
+
+.custom-dropdown input::placeholder {
+    color: white;
+}
+
+.custom-dropdown:hover input::placeholder {
+    color: black;
+}
+
+.custom-dropdown .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+}
+
+.custom-dropdown:hover .icon {
+    color: black;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+#areaLabel {
+    font-size: 12px;
+    color: white;
+    font-weight: 500;
+    margin-bottom:-2px;
+}
+label:empty {
+    margin-top:10px;
+    display: none;
+}
+/* ✅ Mobile Responsive: show only icon */
+@media (max-width: 768px) {
+    .pincode-select {
+        max-width: 90%;
+        margin: 10px auto;
+        align-items: center;
+    }
+
+    .custom-dropdown input {
+        display: none;
+    }
+
+    .custom-dropdown .icon {
+        position: static;
+        transform: none;
+        font-size: 24px;
+        color: #e62263;
+        pointer-events: auto;
+        cursor: pointer;
+        background-color: #f8f8f8;  
+        padding: 8px;              
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-dropdown {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    label {
+        display: none;
+    }
+}
+/* Popup styling */
+.sweet-alert button.cancel {
+    background-color: #ff5f5d;
+}
+
+.popup-background {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.popup-container {
+    position: fixed;
+    z-index: 9999;
+    background-color: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.popup-header {
+    background-color: #e91e63;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.popup-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.popup-body input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.popup-body .continue-button {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+.input-wrapper .clear-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #888;
+}
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 8px 40px 8px 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #888;
+    padding: 0 0 0 8px;
+}
+
+.clear-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 1px;
+    background-color: #ccc;
+}
+
+
+.clear-btn:hover {
+    color: #e74c3c;
+}
+
+.suggestion-box {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    width: 100%;
+    max-width: 250px;
+    max-height: 120px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .popup-body input[type="text"],
+    .input-wrapper input,
+    .popup-body .continue-button {
+        width: 100%;
+    }
+
+    .popup-container {
+        width: 95%;
+    }
+
+    .suggestion-box {
+        max-width: 95%;
+        left: 2.5%;
+        transform: none;
+    }
+}
+.franchise-link {
+    border-radius: 15px;
+	border: 1px solid #ea3761;
+	background-color: #fff;
+	height: 30px;
+	display: flex;
+	align-items: center;
+    color: black;
+    padding: 8px 16px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    margin-right:15px;
+}
+.franchise-link:hover {
+    text-decoration: none;
+    color:#e62263;
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "name": "Paris Bakery",
+  "image": "https://parisbakery.in/images/logo-navbar.png",  
+  "description": "Paris Bakery offers a delightful range of cakes, pastries, cookies, and savory snacks, made with quality ingredients and lots of love.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "F/3, Chandaka IE, Chandrasekharpur",
+    "addressLocality": "Bhubaneswar",
+    "addressRegion": "Odisha",
+    "postalCode": "751024",
+    "addressCountry": "IN"
+  },
+  "telephone": "+91-8018114444",
+  "email": "info@parisbakery.in",
+  "url": "https://parisbakery.in",
+  "sameAs": [
+    "https://www.facebook.com/myparisbakery/",
+    "https://www.instagram.com/helloparisbakery/",
+  ],
+  "priceRange": "₹₹",
+  "openingHours": [
+    "Mo-Su 09:00-21:00"
+  ]
+}
+</script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=GTM-WCCXT2RC' + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WCCXT2RC');
+    </script>
+
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1052872755187160');
+        fbq('track', 'PageView');
+
+
+        const pincodes = [
+            "751001", "751002", "751003", "751004", "751005", "751006", "751007", "751008", "751009", "751010", "751011", "751012", "751013", "751014", "751015", "751016", "751017",
+            "751018", "751019", "751020", "751021", "751022", "751023", "751024", "751025", "751026", "751027", "751028", "751030", "753001", "753002", "753003", "753004", "753005", "753007",
+            "753008", "753009", "753010", "753012", "753013", "753014", "753015"
+        ];
+
+        const pincodeAreas = {
+            "751001": ["AG Square", "Bhubaneswar GPO", "Bhubaneswar Secretariat", "C G Colony", "Kharavela Nagar", "Orissa Assembly"],
+            "751002": ["Bhimatangi", "Old Town", "Kedargouri", "Sisupalgarh", "Sundarpada", "Kausalyaganga", "Harachandi Sahi", "Bankual", "Ebaranga", "Gopinathpur", "Itipur", "Kalyanpur Sasan", "Kuha", "Santarapur"],
+            "751003": ["Baramunda Colony", "Bharatpur", "Ganganagar", "Ghatikia", "Suryanagar", "Andharua", "Malipada"],
+            "751004": ["Utkal University"],
+            "751005": ["Sainik School"],
+            "751006": ["Budheswari Colony", "Kalpana Square", "Laxmisagar", "B.S. Colony", "Jharapada"],
+            "751007": ["Saheed Nagar", "Satyanagar", "V S S Nagar"],
+            "751008": ["Rajbhawan"],
+            "751009": ["Ashok Nagar", "Bapujee Nagar", "Bhubaneswar R S", "Udyan Marg"],
+            "751010": ["Gada Gopinath Prasad", "Rasulgarh"],
+            "751011": ["C R P Lines"],
+            "751012": ["Nayapalli"],
+            "751013": ["Regional Research Laboratory (CSIR-IMMT)"],
+            "751014": ["B J B Nagar", "Bhubaneswar Court"],
+            "751015": ["I R C Village"],
+            "751016": ["Chandra Sekhar Pur"],
+            "751017": ["Mancheswar", "Mancheswar Railway Colony", "OSAP Campus", "Mancheswar R S"],
+            "751018": ["Badagarh Brit Colony"],
+            "751019": ["Aerodrome Area", "Aiginia", "AIIMS", "Dumduma Housing Board Colony", "Jadupur", "Kalinga Vihar", "Patrapada", "Sarakantara"],
+            "751020": ["Aerodrome Area", "Airport", "Bhim Tangi", "Pokhariput"],
+            "751021": ["Sailashree Vihar"],
+            "751022": ["Acharya Vihar", "Bhoinagar", "Madhusudan Nagar"],
+            "751023": ["S.E Rly.Proj. Complex"],
+            "751024": ["K I I T", "Kalarahanga", "Patia Gds"],
+            "751025": ["G.G.P.Colony"],
+            "751026": ["N.M.D Parcel Centre Bhubaneswar"],
+            "751027": ["International Business Centre"],
+            "751028": ["Tamando"],
+            "751030": ["Khandagiri"],
+
+            "753001": ["Cuttack GPO (General Post Office)", "Bajrakabati Road", "Cantonment Road", "Choudhury Bazar", "Dargha Bazar", "Gandhi Bhawan", "Kazibazar", "Mangalabag", "Meria Bazar", "Nimasahi", "Pattapole", "Buxi Bazaar", "Malgodown", "Shaikh Bazaar", "Ranihat (parts)", "Telenga Bazar", "Balu Bazar", "College Square (parts)", "Jobra (parts)", "Tulsipur (parts)"],
+            "753002": ["Binod Bihari", "Chandinichowk", "Dagarpara", "Kafla", "Oriya Bazar", "Pithapur", "Khatbin Sahi"],
+            "753003": ["Chhatra Bazar", "College Square", "Jobra", "Kaliaboda", "Nuapatna (parts)", "Bidanasi (parts)", "CDA Sector 1 to 5 (older parts closer to the core)"],
+            "753004": ["Chauliaganj", "Sikharpur"],
+            "753005": ["Barabati Stadium", "Killa Maidan (Fort Ground)"],
+            "753007": ["Ranihat (primarily residential, but distinct from the core commercial part covered by 753001)", "Mahatab Road", "Dolamundai"],
+            "753008": ["Bidanasi", "Kanika Rajbati", "Biju Patnaik Colony", "Deulasahi Colony", "CDA Sector 6 (parts)"],
+            "753009": ["Nuapatna (older parts, distinct from CDA's newer sectors)", "Naya Bazar (parts)"],
+            "753010": ["Industrial Estate (Cuttack)", "Madhupatna", "Government Press Employee Quarters"],
+            "753012": ["A D Market", "Badambadi Colony", "Badambadi Bus Stand Area"],
+            "753013": ["Kalyani Nagar", "CDA Sector 10 (parts, as it merges into the older town areas)"],
+            "753014": ["Avinab Bidanasi", "CDA Area (specifically the well-established sectors like CDA Sec - 1 to 8, 10, etc. that are considered part of the expanded town area)", "Naya Bazar (parts)"],
+            "753015": ["CDA Sector 11 (newer, but still considered within the extended urban limits of Cuttack Town due to its proximity and development)"]
+        };
+
+        function openPopup() {
+            document.getElementById('popupBg').style.display = 'block';
+            document.getElementById('popupDiv').style.display = 'block';
+
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                document.getElementById("popupBg").style.display = "block";
+                document.getElementById("popupDiv").style.display = "block";
+            }
+
+            const selected = sessionStorage.getItem('tempSelectedPincode');
+            const area = sessionStorage.getItem('tempSelectedArea');
+
+            if (pincodes.includes(selected) && area) {
+                document.getElementById('pincodeInput').value = area + "-" + selected;
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('popupBg').style.display = 'none';
+            document.getElementById('popupDiv').style.display = 'none';
+        }
+
+        function suggestPincode() {
+            const input = document.getElementById('pincodeInput').value.trim().toLowerCase();
+            const suggestionBox = document.getElementById('suggestions');
+            suggestionBox.innerHTML = "";
+
+            if (input.length === 0) return;
+
+            const addedSuggestions = new Set(); // Prevent duplicate entries
+
+            // Match by pincode
+            pincodes.forEach(pincode => {
+                if (pincode.startsWith(input)) {
+                    const areas = pincodeAreas[pincode] || ["Unknown Area"];
+                    areas.forEach(area => {
+                        const key = `${area}-${pincode}`;
+                        if (!addedSuggestions.has(key)) {
+                            appendSuggestion(area, pincode);
+                            addedSuggestions.add(key);
+                        }
+                    });
+                }
+            });
+
+            // Match by area
+            for (const [pincode, areas] of Object.entries(pincodeAreas)) {
+                areas.forEach(area => {
+                    if (area.toLowerCase().includes(input)) {
+                        const key = `${area}-${pincode}`;
+                        if (!addedSuggestions.has(key)) {
+                            appendSuggestion(area, pincode);
+                            addedSuggestions.add(key);
+                        }
+                    }
+                });
+            }
+
+            if (addedSuggestions.size === 0) {
+                const div = document.createElement("div");
+                div.className = "suggestion-item";
+                div.innerText = "No match found";
+                suggestionBox.appendChild(div);
+            }
+
+            function appendSuggestion(area, pincode) {
+                const div = document.createElement("div");
+                div.className = "suggestion-item";
+                div.innerText = ` ${area} - ${pincode} `;
+                div.onclick = () => {
+                    document.getElementById('pincodeInput').value = area +"-"+ pincode;
+                    sessionStorage.setItem('tempSelectedPincode', pincode);
+                    sessionStorage.setItem('tempSelectedArea', area);
+                    suggestionBox.innerHTML = "";
+                };
+                suggestionBox.appendChild(div);
+            }
+        }
+
+
+        function selectPincode() {
+            const selected = sessionStorage.getItem('tempSelectedPincode');
+            const area = sessionStorage.getItem('tempSelectedArea');
+
+            if (pincodes.includes(selected) && area) {
+                sessionStorage.setItem('selectedPincode', selected);
+                sessionStorage.setItem('selectedArea', area);
+                sessionStorage.setItem('pincodeInput', area + "-" + selected);
+
+                document.getElementById('pincode').value = selected;
+                document.getElementById('areaLabel').textContent = area;
+
+                closePopup();
+            } else {
+                alert("Please select a valid pincode and area from suggestions.");
+            }
+        }
+
+        function clearPincodeInput() {
+            const pincodeInput = document.getElementById('pincodeInput');
+            if (pincodeInput) {
+                pincodeInput.value = '';
+                pincodeInput.focus();
+            }
+        }
+
+
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1052872755187160&ev=PageView&noscript=1"/></noscript>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Paris Bakery introduces you to endless savory and sweet options. We offer plethora of bakery and confectionery options and varieties in terms of Cakes, Pastries and Muffins.">
+    <meta name="author" content="">
+    <meta name="keywords" content="Paris Bakery, Online Cakes, Designer Cakes, Chocolate Cake, Fruit Cake, Birthday Cake, Custom Cakes, Pastries">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paris Bakery</title>
+
+    <!-- Facebook open graph protocol configuration -->
+    <meta property="og:title" content="Paris Bakery" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.parisbakery.in" />
+    <meta property="og:image" content="https://www.parisbakery.in/images/slider/Slider-2.png" />
+    <meta property="og:description" content="Paris Bakery introduces you to endless savory and sweet options. We offer plethora of bakery and confectionery options and varieties in terms of Cakes, Pastries and Muffins." />
+    <meta property="og:site_name" content="Paris Bakery" />
+
+     <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Paris Bakery" />
+    <meta name="twitter:description" content="Delightful cakes, pastries, and bakery items for all occasions. Order online from Paris Bakery." />
+    <meta name="twitter:image" content="https://www.parisbakery.in/images/slider/Slider-2.png" />
+
+
+    <!-- Canonical Url -->
+    <link rel="canonical" href="https://www.parisbakery.in" />
+
+    <!-- Standard Favicon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css?v=1" type="text/css" media="screen" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+
+    <script src="<%= Scripts.Url("~/bundles/GlobalHead") %>"></script>
+    <link href="<%= Styles.Url("~/Content/GlobalContent") %>" rel="stylesheet"/>
+
+
+    <!-- <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/GlobalHead") %>
+        <%: Styles.Render("~/Content/Global") %>
+    </asp:PlaceHolder> -->
+    <script>
+        $(function () {
+            $('.lazy').Lazy();
+        });
+
+        $(document).ready(function () {
+            $(".numeric").numeric();
+
+            const pincodeSelect = document.getElementById('pincode');
+            const savedArea = sessionStorage.getItem('selectedArea');
+            // Load from sessionStorage if available
+            const savedPincode = sessionStorage.getItem('selectedPincode');
+            const pinDetails = sessionStorage.getItem('pincodeInput');
+
+            if (savedPincode) {
+                pincodeSelect.value = savedPincode;
+            }
+            if (savedArea) {
+                areaLabel.textContent =  savedArea;
+            }
+            if (pinDetails) {
+                pincodeInput.value = pinDetails;
+            }
+            // Save selection to sessionStorage on change
+            pincodeSelect.addEventListener('change', () => {
+                const selected = pincodeSelect.value;
+                const area = pincodeAreas[selected] || "Unknown Area";
+                sessionStorage.setItem('selectedPincode', selected);
+                sessionStorage.setItem('selectedArea', area);
+                sessionStorage.getItem('pincodeInput', pinDetails);
+                areaLabel.textContent = area;
+            });
+        });
+    </script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WCCXT2RC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+        <!-- Popup Background -->
+<div id="popupBg" class="popup-background" style="display: none;"></div>
+
+<!-- Popup Box -->
+<div id="popupDiv" class="popup-container" style="display: none;">
+    <div class="popup-header">
+        Choose Your Delivery Location
+        <span class="close-btn" onclick="closePopup()">×</span>
+    </div>
+    <div class="popup-body">
+<p>
+  <span style="color: #e91e63;">ⓘ</span> Where would you like to get the product delivered?<br>
+</p>
+
+
+<div class="center-screen">
+    <div class="input-wrapper">
+        <input type="text" id="pincodeInput" class="truncate-text" placeholder="Enter Delivery Pincode"
+               onkeyup="suggestPincode()" autocomplete="off" />
+        <button type="button" class="clear-btn" onclick="clearPincodeInput()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="suggestions" class="suggestion-box"></div>
+    </div>
+</div>
+
+
+        <button type="button" class="continue-button" onclick="selectPincode()">CONTINUE</button>
+    </div>
+</div>
+    <!-- Main Header -->
+    <header class="header-main container-fluid no-padding">
+        <div class="menu-block container-fluid no-padding">
+            <!-- Main Navigation -->
+            <div class="container-fluid navbarContainer">
+                <nav class="navbar ow-navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="default.aspx">
+                            <img src="images/logo-navbar.png" alt="Paris Bakery" title="Paris Bakery" />
+                        </a>
+
+                       <!-- Pincode dropdown -->
+                       <div class="pincode-select">
+                         <div class="custom-dropdown">
+                           <label id="areaLabel"></label>
+                           <i class="fas fa-map-marker-alt icon"></i>
+                           <input list="pincodeList" id="pincode" name="pincode" readonly  style="border: none; outline: none;" placeholder="Search locality" onfocus="openPopup()">
+                         </div>
+                       </div>
+
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                             <li id="TrackOrders" runat="server">
+                                <a href="mya.aspx">
+                                    <img src="images/svg-icons/track.svg" alt="Track Order" />
+                                    <span>Track Order</span>
+                                </a>
+                            </li>
+                            <li id="loginmenu" runat="server" class="dropdown onlineMenu">
+                                <a id="loginlink" runat="server" href='#' class="dropdown-toggle dropdown-switch" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <img src="images/svg-icons/user.svg" alt="My Account" />
+                                    <span>Welcome</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li id="MyOrders" runat="server"><a href='mya.aspx'><span>My Orders</span></a>
+                                    </li>
+                                    <li id="payBackLink" runat="server"><a href='myapayback.aspx'><span>My Payback Points</span></a>
+                                    </li>
+                                    <li><a href='myprofile.aspx'><span>My Profile</span></a>
+                                    </li>
+                                    <li id="StoreOrders" runat="server"><a href='StoreOrders.aspx'><span>Store Orders</span></a>
+                                    </li>
+                                    <li id="PendingOrders" runat="server"><a href='PendingOrders.aspx'><span>Pending Orders</span></a>
+                                    </li>
+                                    <li id="Products" runat="server"><a href='Products.aspx'><span>Products</span></a>
+                                    </li>
+                                    <li id="UpdateBanner" runat="server"><a href='UpdateBanner.aspx'><span>Update Banner</span></a>
+                                    </li>
+                                    <li id="Customers" runat="server"><a href='Customers.aspx'><span>Customers</span></a>
+                                    </li>
+                                    <li id="ServiceReport" runat="server"><a href='ServiceReport.aspx'><span>Service Report</span></a>
+                                    </li>
+                                    <li><a href='mya.aspx?logout=yes'><span>Logout</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="MyCart" runat="server">
+                                <a href="sparkcart.aspx">
+                                    <img src="images/svg-icons/cart.svg" alt="My Cart" />
+                                    <span>My Cart</span>
+                                    <div class="cart-item-circle">
+                                        <span class="cart-item-count" id="cartqty" runat="server">0</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id="main-options-icon">
+                                    <img src="images/svg-icons/menu.svg" alt="More Options" />
+                                    <span>More</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!-- Main Navigation -->
+
+            <!-- Menu Navigation -->
+            <div class="menu-navbar-all">
+                <div class="menu-navbar-flex">
+                    <div class="menu-navbar">
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <a class="menu-category-title" href="spark.aspx?xdt=All Cakes">Cakes</a>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-subnav" style="display:none;">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">By Flavour</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Chocolate Cakes&isFlavour=true">Chocolate Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Eggless Cakes&isFlavour=true">Eggless Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Black Forest Cakes&isFlavour=true">Black Forest Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Butterscotch Cakes&isFlavour=true">Butterscotch Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Strawberry Cakes&isFlavour=true">Strawberry Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Red Velvet Cakes&isFlavour=true">Red Velvet Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Vanilla Cakes&isFlavour=true">Vanilla Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Mango Cakes&isFlavour=true">Mango Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Pineapple Cakes&isFlavour=true">Pineapple Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Fruit Cakes&isFlavour=true">Fruit Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Blueberry Cakes&isFlavour=true">Blueberry Cakes</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">By Type</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Photo Cakes">Photo Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Jar Cakes">Jar Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cup Cakes">Cup Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Personalised Cupcakes">Personalised Cupcakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Pastry">Pastries</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Vegan Cakes">Vegan Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Heart Shaped Cakes">Heart Shaped Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Kit Kat Cakes">Kit Kat Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Party Cakes">Party Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Midnight Cakes">Midnight Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=All Cakes">All Cakes</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">Designer Cakes</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=All Designer Cakes">All Designer Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Minion Cakes">Minion Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Baby shower Cakes">Baby shower Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Princess Cakes">Princess Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Barbie cakes">Barbie cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=PUBG Cakes">PUBG Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Rainbow cakes">Rainbow cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Mickey Mouse Cakes">Mickey Mouse Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Car Cakes">Car Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Chota Bheem Cakes">Chota Bheem Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Spiderman Cakes">Spiderman Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Jungle Theme Cakes">Jungle Theme Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cartoon Cakes">Cartoon Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Super Hero Cakes">Super Hero Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Alphabet Cakes">Alphabet Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Number Cakes">Number Cakes</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">Anniversary</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=All Anniversary Cakes">All Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Anniversary Photo Cakes">Anniversary Photo Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=1st Anniversary Cakes">1st Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=5th Anniversary Cakes">5th Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=10th Anniversary Cakes">10th Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=25th Anniversary Cakes">25th Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=50th Anniversary Cakes">50th Anniversary Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Anniversary Cakes For Parents">Anniversary Cakes For Parents</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">Birthday</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=All Birthday Cakes">All Birthday Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=1st Birthday Cakes">1st Birthday Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Her">Cakes for Her</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Kids">Cakes for Kids</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Him">Cakes for Him</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Husband">Cakes for Husband</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Wife">Cakes for Wife</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Father">Cakes for Father</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Mother">Cakes for Mother</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Friend">Cakes for Friend</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Brother">Cakes for Brother</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Cakes for Sister">Cakes for Sister</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Birthday Photo Cakes">Birthday Photo Cakes</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title">Occasions</div>
+                                    <div class="menu-separator"></div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Grandparents Day Cakes">Grandparents Day Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Boss Day Cakes">Boss Day Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Karwa Chauth Cakes">Karwa Chauth Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Diwali Cakes">Diwali Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Bhai Dooj Cakes">Bhai Dooj Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Childrens Day Cakes">Childrens Day Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Daughters Day Cakes">Daughters Day Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=Christmas Cakes">Christmas Cakes</a>
+                                <a class="menu-category-sub-title" href="spark.aspx?xdt=New Year Cakes">New Year Cakes</a>
+                            </div>
+                        </div>
+                        <div class="menu-subnav">
+                            <div class="menu-subnavbtn" style="display:none">
+                                <div class="menu-title-container">
+                                    <div class="menu-category-title" >Snacks</div>
+                                </div>
+                            </div>
+                            <div class="menu-subnav-content-column">
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=BUN&grp=FRESH BAKE'>Bun</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=DRY CAKE&grp=FRESH BAKE'>Dry Cake</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=KULCHA&grp=FRESH BAKE'>Kulcha</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=LOAF&grp=FRESH BAKE'>Loaf</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=MUFFIN&grp=FRESH BAKE'>Muffin</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=REGULAR BREAD&grp=FRESH BAKE'>Regular Bread</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=RUSK&grp=FRESH BAKE'>Rusk</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=SOUP ITEMS&grp=FRESH BAKE'>Soup Items</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=SPECIAL BREAD&grp=FRESH BAKE'>Special Bread</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=TOAST&grp=FRESH BAKE'>Toast</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=GUJHIYA&grp=COOKIES'>Gujhiya</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=PUFF&grp=COOKIES'>Puff</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=SALTY&grp=COOKIES'>Salty</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=SUGAR FREE&grp=COOKIES'>Sugar Free</a>
+                                <a class="menu-category-sub-title" href='spark.aspx?xdt=SUGARY&grp=COOKIES'>Sugary</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-navbar-flex">
+                        <a href="https://play.google.com/store/apps/details?id=com.pyaris.pyarisbakery" target="_blank">
+                            <img class="navbar-app-link" src="images/webgoogleplay.png" alt="Download Android App" height="50" style="display: none;"/>
+                        </a>
+
+                            <a href="Franchise.aspx" class="franchise-link">Franchise Inquiry</a>
+
+                        <div class="category-mobilecontainer">
+                          <span class="category-callus">Call Us:</span>
+                          <a href="tel:+918018114444" style="text-decoration: none;" class="category-number">+91-8018114444</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Navigation -->
+
+            <div id="main-options">
+                <div class="mobile-options-container">
+                    <div class="mobile-close-options-btn">
+                        <div class="mobile-option-title"></div>
+                        <img id="main-close-options-btn" src="images/svg-icons/close.png" alt="Close Options" />
+                    </div>
+                    <div class="mobile-options-content">
+                        <a class="mobile-option" href="about.aspx">
+                            <span><i class="fa fa-list mobile-option-icon"></i></span>
+                            <div class="mobile-option-title">About Us</div>
+                        </a>
+                        <a class="mobile-option" href="contact.aspx">
+                            <span><i class="fa fa-phone mobile-option-icon"></i></span>
+                            <div class="mobile-option-title">Contact Us</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Header -->
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="mobile-header-content">
+            <div class="mobile-icon">
+                <div class="mobile-content-section">
+                    <img src="images/svg-icons/menu-mobile.svg" alt="Menu" id="mobile-menu-icon" width="25px" height="100%">
+                    <div>
+                        <a href="default.aspx">
+                            <div class="mobile-logo-container">
+                                <img src="images/logo-navbar.png" alt="Paris Bakery" />
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                       <!-- Pincode dropdown -->
+                      <div class="mobile-content-section">
+                       <div class="pincode-select">
+                         <div class="custom-dropdown">
+                           <i class="fas fa-map-marker-alt icon" onclick="openPopup()" ></i>
+                           <input list="pincodeList" id="pincode" name="pincode" placeholder="Search locality" onfocus="openPopup()">
+                         </div>
+                       </div>
+                      </div>
+                <div class="mobile-content-section">
+                    <div class="add-to-cart">
+                        <a class="cart-link" href="sparkcart.aspx">
+                            <span>
+                                <img class="cart-icon" src="images/svg-icons/cart.svg" alt="My Cart" />
+                            </span>
+                            <div class="cart-item-circle">
+                                <span class="cart-item-count" id="mobilecartqty" runat="server">0</span>
+                            </div>
+                        </a>
+                    </div>
+                    <img src="images/svg-icons/dot-menu.svg" alt="More Options" id="mobile-options-icon">
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-drawer">
+            <div class="mobile-menu-header">
+                <div class="mobile-menu-heading">All Category</div>
+                <div class="mobile-menu-close"></div>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-all">
+                    <h3>
+                        <a class="mobile-drawer-title" href="spark.aspx?xdt=All Cakes">Cakes</a>
+                    </h3>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-1">
+                        <div class="mobile-drawer-title">By Flavour</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-1">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Chocolate Cakes&isFlavour=true">Chocolate Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Eggless Cakes&isFlavour=true">Eggless Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Black Forest Cakes&isFlavour=true">Black Forest Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Butterscotch Cakes&isFlavour=true">Butterscotch Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Strawberry Cakes&isFlavour=true">Strawberry Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Red Velvet Cakes&isFlavour=true">Red Velvet Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Vanilla Cakes&isFlavour=true">Vanilla Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Mango Cakes&isFlavour=true">Mango Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Pineapple Cakes&isFlavour=true">Pineapple Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Fruit Cakes&isFlavour=true">Fruit Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Blueberry Cakes&isFlavour=true">Blueberry Cakes</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-2">
+                        <div class="mobile-drawer-title">By Type</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-2">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Photo Cakes">Photo Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Jar Cakes">Jar Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cup Cakes">Cup Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Personalised Cupcakes">Personalised Cupcakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Pastry">Pastries</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Vegan Cakes">Vegan Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Heart Shaped Cakes">Heart Shaped Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Kit Kat Cakes">Kit Kat Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Party Cakes">Party Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Midnight Cakes">Midnight Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=All Cakes">All Cakes</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-3">
+                        <div class="mobile-drawer-title">Designer Cakes</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-3">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=All Designer Cakes">All Designer Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Minion Cakes">Minion Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Baby shower Cakes">Baby shower Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Princess Cakes">Princess Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Barbie cakes">Barbie cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=PUBG Cakes">PUBG Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Rainbow cakes">Rainbow cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Mickey Mouse Cakes">Mickey Mouse Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Car Cakes">Car Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Chota Bheem Cakes">Chota Bheem Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Spiderman Cakes">Spiderman Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Jungle Theme Cakes">Jungle Theme Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cartoon Cakes">Cartoon Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Super Hero Cakes">Super Hero Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Alphabet Cakes">Alphabet Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Number Cakes">Number Cakes</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-4">
+                        <div class="mobile-drawer-title">Anniversary</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-4">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=All Anniversary Cakes">All Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Anniversary Photo Cakes">Anniversary Photo Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=1st Anniversary Cakes">1st Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=5th Anniversary Cakes">5th Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=10th Anniversary Cakes">10th Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=25th Anniversary Cakes">25th Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=50th Anniversary Cakes">50th Anniversary Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Anniversary Cakes For Parents">Anniversary Cakes For Parents</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-5">
+                        <div class="mobile-drawer-title">Birthday</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-5">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=All Birthday Cakes">All Birthday Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=1st Birthday Cakes">1st Birthday Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Her">Cakes for Her</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Kids">Cakes for Kids</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Him">Cakes for Him</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Husband">Cakes for Husband</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Wife">Cakes for Wife</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Father">Cakes for Father</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Mother">Cakes for Mother</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Friend">Cakes for Friend</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Brother">Cakes for Brother</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Cakes for Sister">Cakes for Sister</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Birthday Photo Cakes">Birthday Photo Cakes</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-7">
+                        <div class="mobile-drawer-title">Upcoming Occasion</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-7">
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Grandparents Day Cakes">Grandparents Day Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Boss Day Cakes">Boss Day Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Karwa Chauth Cakes">Karwa Chauth Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Diwali Cakes">Diwali Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Bhai Dooj Cakes">Bhai Dooj Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Childrens Day Cakes">Childrens Day Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Daughters Day Cakes">Daughters Day Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=Christmas Cakes">Christmas Cakes</a>
+                        <a class="mobile-menu-description" href="spark.aspx?xdt=New Year Cakes">New Year Cakes</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-all">
+                    <div class="mobile-menu-li-header" id="mobile-menu-li-header-8">
+                        <div class="mobile-drawer-title">Snacks</div>
+                        <div class="mobile-arrow-forward">
+                            <img alt="arrow" src="images/svg-icons/down-arrow.svg">
+                        </div>
+                    </div>
+                    <div class="mobile-menu-bottom-show" id="mobile-submenu-8">
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=BUN&grp=FRESH BAKE'>Bun</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=DRY CAKE&grp=FRESH BAKE'>Dry Cake</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=KULCHA&grp=FRESH BAKE'>Kulcha</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=LOAF&grp=FRESH BAKE'>Loaf</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=MUFFIN&grp=FRESH BAKE'>Muffin</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=REGULAR BREAD&grp=FRESH BAKE'>Regular Bread</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=RUSK&grp=FRESH BAKE'>Rusk</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=SOUP ITEMS&grp=FRESH BAKE'>Soup Items</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=SPECIAL BREAD&grp=FRESH BAKE'>Special Bread</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=TOAST&grp=FRESH BAKE'>Toast</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=GUJHIYA&grp=COOKIES'>Gujhiya</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=PUFF&grp=COOKIES'>Puff</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=SALTY&grp=COOKIES'>Salty</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=SUGAR FREE&grp=COOKIES'>Sugar Free</a>
+                        <a class="mobile-menu-description" href='spark.aspx?xdt=SUGARY&grp=COOKIES'>Sugary</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-options">
+            <div class="mobile-options-container">
+                <div class="mobile-close-options-btn">
+                    <div class="mobile-option-title"></div>
+                    <img id="mobile-close-options-btn" src="images/svg-icons/close.png" alt="Close Options">
+                </div>
+                <div class="mobile-options-content">
+                    <a class="mobile-option loginoption" href="login.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Login/Signup</div>
+                    </a>
+                    <div class="mobile-option useroption">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title" id="usernameoption" runat="server"></div>
+                    </div>
+                    <a class="mobile-option useroption userspecopt" href="mya.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">My Orders</div>
+                    </a>
+                    <a class="mobile-option paybackoption" href="myapayback.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">My Payback Points</div>
+                    </a>
+                    <a class="mobile-option useroption" href="myprofile.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">My Profile</div>
+                    </a>
+                    <a class="mobile-option adminoption" href="StoreOrders.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Store Orders</div>
+                    </a>
+                        <a class="mobile-option adminoption" href="PendingOrders.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Pending Orders</div>
+                    </a>
+                    <a class="mobile-option adminoption" href="Products.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Products</div>
+                    </a>
+                    <a class="mobile-option adminoption" href="UpdateBanner.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Update Banner</div>
+                    </a>
+                    <a class="mobile-option adminoption" href="Customers.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Customers</div>
+                    </a>
+                    <a class="mobile-option adminoption" href="ServiceReport.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Service Report</div>
+                    </a>
+                    <a class="mobile-option" href="about.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">About Us</div>
+                    </a>
+                    <a class="mobile-option" href="contact.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Contact Us</div>
+                    </a>
+                    <a class="mobile-option" href="Franchise.aspx">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Franchise Inquiry</div>
+                    </a>
+                    <a class="mobile-option useroption" href="mya.aspx?logout=yes">
+                        <span><i class="fa mobile-option-icon"></i></span>
+                        <div class="mobile-option-title">Logout</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Header -->
+
+    <!-- Main Body -->
+    <form id="form1" runat="server">
+        <div id="mainBody">
+            <div class="whatsapp-icon">
+                <a target="_blank" href="whatsapp.aspx">
+                    <img alt="Send to Whatapp" title="Send to Whatapp" src="images/whatsapp-icon.png" width="100%" height="100%">
+                </a>
+            </div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <!-- Main Body -->
+
+    <!-- Main Footer -->
+    <footer class="footer-main container-fluid no-padding">
+        <div class="footer-main-container row">
+            <div class="col-md-3">
+                <div class="footerHeader">
+                    Quick Links
+                </div>
+                <div class="footerText">
+                    <a href="about.aspx" class="fg">About Us</a>
+                </div>
+                <div class="footerText">
+                    <a href="privacy.aspx" class="fg">Privacy Policy</a>
+                </div>
+                <div class="footerText">
+                    <a href="terms.aspx" class="fg">Terms & Conditions</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="footerHeader">
+                    Help
+                </div>
+                <div class="footerText">
+                    <a href="refund.aspx" class="fg">Refund & Cancellation</a>
+                </div>
+                <div class="footerText">
+                    <a href="contact.aspx" class="fg">Contact Us</a>
+                </div>
+            </div>
+
+            <div class="col-md-4" style="display:none">
+                <div class="footerHeader">
+                    Download App
+                </div>
+                <div class="playstoreLink">
+                    <a href="https://play.google.com/store/apps/details?id=com.pyaris.pyarisbakery" target="_blank">
+                        <img class="navbar-app-link" src="images/webgoogleplay.png" alt="Download Android App"/>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="footerHeader">
+                    We are Social
+                </div>
+                <div class="fbIconContainer">
+                    <a class="fbImageSize" href="https://www.facebook.com/myparisbakery/" target="_blank" aria-label="facebook"></a>
+                </div>
+                <div class="instaIconContainer">
+                    <a class="fbImageSize" href="https://www.instagram.com/helloparisbakery/" target="_blank" aria-label="instagram"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-cards">
+            <span class="desktop-accept-title">We accept:</span>
+            <span class="desktop-image-footer">
+                <img width="100%" src="images/new-images/payment-desktop.png" alt="Payment Options" />
+            </span>
+            <span class="mobile-image-footer">
+                <img width="100%" src="images/new-images/payment-mobile.png" alt="Payment Options" />
+            </span>
+        </div>
+    </footer>
+    <!-- Main Footer -->
+
+    <!-- Bottom Footer -->
+    <div class="bottom-footer container-fluid no-padding">
+        <div class="container">
+            <div class="footer-copyright">
+                <p>&copy; Copyrights 2020. All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Footer -->
+
+    <script>
+        $(document).ready(function () {
+            //TOGGLING NAVBAR ON SCROLL
+            //$(window).scroll(function () {
+            //    var y = $(this).scrollTop();
+            //    if (y > 50) {
+            //        $(".main-header > .main-header-content, .main-header > .navbar-all").css("display", "none");
+            //        $(".main-header > .all-content-left").css("display", "flex");
+            //    }
+            //    else {
+            //        $(".main-header > .main-header-content, .main-header > .navbar-all").css("display", "flex");
+            //        $(".main-header > .all-content-left").css("display", "none");
+            //    }
+            //});
+
+            //MOBILE PAGE DISPLAY ACTIONS
+            let isLoggedIn = <%=IsLoggedIn.ToString().ToLower()%>;
+            if (isLoggedIn) {
+                $(".useroption").css("display", "flex");
+                let isPaybackAvailable = <%=Program.isPaybackAvailable.ToString().ToLower()%>;
+                if (isPaybackAvailable) {
+                    $(".paybackoption").css("display", "flex");
+                }
+                let isAdmin = <%=IsAdmin.ToString().ToLower()%>;
+                if (isAdmin) {
+                    $(".userspecopt").css("display", "none");
+                    $(".add-to-cart").css("display", "none");
+                    $(".adminoption").css("display", "flex");
+                }
+            }
+            else {
+                $(".loginoption").css("display", "flex");
+            }
+
+            //MOBILE OPTIONS ACTIONS    
+            $("#mobile-options-icon").click(function () {
+                $("#mobile-options").css("display", "block");
+            });
+
+            $("#mobile-close-options-btn").click(function () {
+                $("#mobile-options").css("display", "none");
+            });
+
+            //MAIN OPTIONS ACTIONS    
+            $("#main-options-icon").click(function () {
+                $("#main-options").css("display", "block");
+            });
+
+            $("#main-close-options-btn").click(function () {
+                $("#main-options").css("display", "none");
+            });
+
+            //MOBILE MENU DRAWER ACTIONS
+            $(".mobile-drawer").hide();
+            $(".mobile-menu-bottom-show").hide();
+
+            $("#mobile-menu-icon").click(function () {
+                $(".mobile-drawer").show();
+            });
+
+            $(".mobile-menu-li-header").click(function () {
+                let id = this.id.split('-')[4];
+                let isVisible = $("#mobile-submenu-" + id).is(":visible")
+                $(".mobile-menu-bottom-show").hide();
+                $(".mobile-menu-li-header > div.mobile-arrow-forward > img").attr('src', 'images/svg-icons/down-arrow.svg');
+                if (isVisible) {
+                    $("#mobile-submenu-" + id).hide();
+                    $("#mobile-menu-li-header-" + id + " > div.mobile-arrow-forward > img").attr('src', 'images/svg-icons/down-arrow.svg');
+                }
+                else {
+                    $("#mobile-submenu-" + id).show();
+                    $("#mobile-menu-li-header-" + id + " > div.mobile-arrow-forward > img").attr('src', 'images/svg-icons/up-arrow.svg');
+                }
+
+            });
+
+            $(".mobile-menu-close").click(function () {
+                $(".mobile-drawer").hide();
+            });
+
+            $(document).mouseup(function (e) {
+                var maincontainer = $("#main-options");
+                if (!maincontainer.is(e.target) && maincontainer.has(e.target).length === 0) {
+                    maincontainer.hide();
+                }
+
+                var mobilecontainer = $("#mobile-options");
+                if (!mobilecontainer.is(e.target) && mobilecontainer.has(e.target).length === 0) {
+                    mobilecontainer.hide();
+                }
+            });
+
+            //CAROUSEL
+            $('.slick-center').slick({
+                centerMode: true,
+                centerPadding: '5%',
+                slidesToShow: 1,
+                arrows: true,
+                prevArrow: "<img class='slick-prev' src='images/svg-icons/left-arrow.svg' alt='prev' >",
+                nextArrow: "<img class='slick-next' src='images/svg-icons/right-arrow.svg' alt='next' >",
+                autoplay: true,
+                autoplaySpeed: 2000,
+                dots: true,
+                responsive: [
+                    {
+                        breakpoint: 769,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 1,
+                            arrows: false
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 1,
+                            arrows: false
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+<script src="bundles/Global"></script>
+    <!-- <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/Global") %>
+    </asp:PlaceHolder> -->
+</body>
+</html>
