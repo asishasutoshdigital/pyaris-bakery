@@ -47,4 +47,9 @@ export const cartAPI = {
   clear: () => api.delete('/cart'),
 };
 
+// Catalog API
+export const catalogAPI = {
+  getProductsByCategory: (params) => api.get('/catalog/products', { params }),
+};
+
 export default api;

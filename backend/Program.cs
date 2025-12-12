@@ -29,7 +29,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Secure = true;
 });
 
 var app = builder.Build();
