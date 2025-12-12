@@ -105,7 +105,8 @@ public class AuthController : ControllerBase
             using var checkCommand = new SqlCommand(checkQuery, connection);
             checkCommand.Parameters.AddWithValue("@MobileNo", request.MobileNo);
 
-            var count = (int)await checkCommand.ExecuteScalarAsync();
+            var countResult = await checkCommand.ExecuteScalarAsync();
+            var count = countResult != null ? Convert.ToInt32(countResult) : 0;
             if (count > 0)
             {
                 return BadRequest(new { message = "User with this mobile number already exists" });
