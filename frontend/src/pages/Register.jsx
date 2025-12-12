@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { authAPI } from '../services/api';
 
 function Register() {
   const navigate = useNavigate();
@@ -36,13 +36,13 @@ function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await authAPI.register({
         mobileNo: formData.mobileNo,
         name: formData.name,
         password: formData.password,
         email: formData.email,
         address: formData.address
-      }, { withCredentials: true });
+      });
 
       if (response.data.success) {
         navigate('/');

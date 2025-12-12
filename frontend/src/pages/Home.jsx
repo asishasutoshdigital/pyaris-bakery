@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { homeAPI } from '../services/api';
 
 function Home() {
   const [sliderItems, setSliderItems] = useState([]);
@@ -10,7 +10,7 @@ function Home() {
 
   const loadSlider = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/home/slider');
+      const response = await homeAPI.getSlider();
       setSliderItems(response.data);
     } catch (error) {
       console.error('Error loading slider:', error);

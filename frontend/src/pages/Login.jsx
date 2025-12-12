@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { authAPI } from '../services/api';
 
 function Login() {
   const navigate = useNavigate();
@@ -20,10 +20,7 @@ function Login() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/check-user', 
-        JSON.stringify(username), 
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const response = await authAPI.checkUser(username);
 
       if (response.data.exists) {
         setShowPassword(true);
@@ -45,10 +42,10 @@ function Login() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await authAPI.login({
         mobileNo: username,
         password: password
-      }, { withCredentials: true });
+      });
 
       if (response.data.success) {
         const searchParams = new URLSearchParams(location.search);

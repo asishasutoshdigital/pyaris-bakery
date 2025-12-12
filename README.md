@@ -180,3 +180,25 @@ Additional pages and features to be converted:
 - Session-based authentication is maintained
 - Database queries remain the same
 - Payment gateway configurations are preserved in appsettings.json
+
+## Security
+
+### Vulnerabilities Fixed
+✅ **Cookie Security**: Fixed cookie Secure flag - all session cookies now use HttpOnly and Secure flags
+✅ **CodeQL Scan**: Passed with 0 alerts
+
+### Known Security Considerations
+⚠️ **Password Storage**: The current implementation stores passwords in plain text in the database, matching the existing ASP.NET Web Forms application. This preserves backward compatibility but should be addressed in a future update by:
+- Implementing password hashing (bcrypt, Argon2, or PBKDF2)
+- Migrating existing passwords to hashed format
+- Updating authentication logic
+
+⚠️ **CSS Font Format**: The existing CSS files reference some fonts with 'otf2' format, which is non-standard. This was preserved as-is per requirements but may cause font loading issues in some browsers.
+
+## Future Enhancements
+- Implement password hashing for improved security
+- Add comprehensive error handling and logging
+- Implement rate limiting for authentication endpoints
+- Add input validation middleware
+- Implement CSRF protection
+- Add comprehensive unit and integration tests
