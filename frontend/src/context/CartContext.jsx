@@ -20,21 +20,24 @@ export const CartProvider = ({ children }) => {
     if (savedCart) {
       const items = JSON.parse(savedCart);
       setCartItems(items);
-      setCartCount(items.length);
+      const totalQuantity = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      setCartCount(totalQuantity);
     }
   }, []);
 
   const addToCart = (item) => {
     const updatedCart = [...cartItems, item];
     setCartItems(updatedCart);
-    setCartCount(updatedCart.length);
+    const totalQuantity = updatedCart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    setCartCount(totalQuantity);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const removeFromCart = (itemId) => {
     const updatedCart = cartItems.filter((item) => item.id !== itemId);
     setCartItems(updatedCart);
-    setCartCount(updatedCart.length);
+    const totalQuantity = updatedCart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    setCartCount(totalQuantity);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 

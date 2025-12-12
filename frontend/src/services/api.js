@@ -31,7 +31,11 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Note: For proper navigation, components should handle 401 errors
+      // and use React Router's navigation. This is a fallback.
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('unauthorized'));
+      }
     }
     return Promise.reject(error);
   }

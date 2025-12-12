@@ -35,6 +35,7 @@ namespace backend.Controllers
                     string query;
                     if (isFlavour && !string.IsNullOrEmpty(flavour))
                     {
+                        // Using parameterized query to prevent SQL injection
                         query = @"SELECT DISTINCT [ID], [Menu Name], [Sell Price], [Group], [Sub Group], [Active], [Flavour] 
                                  FROM [XMaster Menu] 
                                  WHERE [Flavour] LIKE @Flavour AND [Active] = 1";

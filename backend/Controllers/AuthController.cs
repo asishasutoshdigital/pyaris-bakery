@@ -43,8 +43,8 @@ namespace backend.Controllers
                             {
                                 var storedPassword = reader.IsDBNull(8) ? "" : reader.GetString(8);
                                 
-                                // Verify password (in real app, use proper hashing)
-                                if (storedPassword == request.Password || SessionHelper.VerifyPassword(request.Password, storedPassword))
+                                // Verify password using hashing
+                                if (SessionHelper.VerifyPassword(request.Password, storedPassword))
                                 {
                                     var user = new UserResponse
                                     {
