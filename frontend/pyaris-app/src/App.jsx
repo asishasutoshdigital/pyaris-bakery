@@ -30,6 +30,34 @@ import FranchisePage from './pages/FranchisePage';
 import SearchPage from './pages/SearchPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
+import CustomErrorPage from './pages/CustomErrorPage';
+import WhatsAppPage from './pages/WhatsAppPage';
+import OnlinePage from './pages/OnlinePage';
+import DemoPage from './pages/DemoPage';
+import ResponsePage from './pages/ResponsePage';
+import SalesPage from './pages/SalesPage';
+
+// Admin pages
+import AdminProductsPage from './pages/admin/AdminProductsPage';
+import AdminEditProductPage from './pages/admin/AdminEditProductPage';
+import AdminCustomersPage from './pages/admin/AdminCustomersPage';
+import AdminPendingOrdersPage from './pages/admin/AdminPendingOrdersPage';
+import AdminStoreOrdersPage from './pages/admin/AdminStoreOrdersPage';
+import AdminUpdateBannerPage from './pages/admin/AdminUpdateBannerPage';
+import AdminServiceReportPage from './pages/admin/AdminServiceReportPage';
+import AdminGenerateBillPage from './pages/admin/AdminGenerateBillPage';
+import AdminSalesPage from './pages/admin/AdminSalesPage';
+import AdminStockPage from './pages/admin/AdminStockPage';
+
+// Payment pages
+import VPayInitPage from './pages/VPayInitPage';
+import VPayRedirectPage from './pages/VPayRedirectPage';
+import VPayVerifyPage from './pages/VPayVerifyPage';
+import VPayHashPage from './pages/VPayHashPage';
+import VPayInitPaytmPage from './pages/VPayInitPaytmPage';
+import PaymentGatewayPage from './pages/PaymentGatewayPage';
+import GenerateChecksumPage from './pages/GenerateChecksumPage';
+import VerifyChecksumPage from './pages/VerifyChecksumPage';
 
 function App() {
   return (
@@ -70,6 +98,36 @@ function App() {
             
             {/* Search */}
             <Route path="/search" element={<SearchPage />} />
+            
+            {/* Admin pages */}
+            <Route path="/admin/products" element={<AdminProductsPage />} />
+            <Route path="/admin/products/edit/:id" element={<AdminEditProductPage />} />
+            <Route path="/admin/customers" element={<AdminCustomersPage />} />
+            <Route path="/admin/orders/pending" element={<AdminPendingOrdersPage />} />
+            <Route path="/admin/orders/store" element={<AdminStoreOrdersPage />} />
+            <Route path="/admin/banner" element={<AdminUpdateBannerPage />} />
+            <Route path="/admin/reports" element={<AdminServiceReportPage />} />
+            <Route path="/admin/billing" element={<AdminGenerateBillPage />} />
+            <Route path="/admin/sales" element={<AdminSalesPage />} />
+            <Route path="/admin/stock" element={<AdminStockPage />} />
+            
+            {/* Payment pages */}
+            <Route path="/payment/phonepe/init" element={<VPayInitPage />} />
+            <Route path="/payment/phonepe/redirect" element={<VPayRedirectPage />} />
+            <Route path="/payment/phonepe/verify" element={<VPayVerifyPage />} />
+            <Route path="/payment/phonepe/hash" element={<VPayHashPage />} />
+            <Route path="/payment/paytm/init" element={<VPayInitPaytmPage />} />
+            <Route path="/payment/gateway" element={<PaymentGatewayPage />} />
+            <Route path="/payment/checksum/generate" element={<GenerateChecksumPage />} />
+            <Route path="/payment/checksum/verify" element={<VerifyChecksumPage />} />
+            
+            {/* Misc pages */}
+            <Route path="/whatsapp" element={<WhatsAppPage />} />
+            <Route path="/online" element={<OnlinePage />} />
+            <Route path="/demo" element={<DemoPage />} />
+            <Route path="/response" element={<ResponsePage />} />
+            <Route path="/sales" element={<SalesPage />} />
+            <Route path="/custom-error" element={<CustomErrorPage />} />
             
             {/* Error pages */}
             <Route path="/error" element={<ErrorPage />} />
