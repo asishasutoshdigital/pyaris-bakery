@@ -26,7 +26,12 @@ builder.Services.Configure<PaytmConfig>(builder.Configuration.GetSection("Paytm"
 
 // Register services
 builder.Services.AddScoped<UtilityService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<SmsService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<PromoService>();
 builder.Services.AddSingleton<LogService>();
+builder.Services.AddSingleton<PinGeneratorService>();
 
 var app = builder.Build();
 
