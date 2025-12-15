@@ -2,55 +2,85 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="footer bg-dark text-light py-4 mt-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3">
-            <h5>Paris Bakery</h5>
-            <p>Your favorite bakery for cakes, pastries, and more!</p>
+    <footer className="footer-main container-fluid no-padding">
+      <div className="footer-main-container row">
+        <div className="col-md-3">
+          <div className="footerHeader">Quick Links</div>
+          <div className="footerText">
+            <Link to="/about" className="fg">About Us</Link>
           </div>
-          <div className="col-md-3">
-            <h5>Quick Links</h5>
-            <ul className="list-unstyled">
-              <li><Link to="/" className="text-light text-decoration-none">Home</Link></li>
-              <li><Link to="/products" className="text-light text-decoration-none">Products</Link></li>
-              <li><Link to="/about" className="text-light text-decoration-none">About Us</Link></li>
-              <li><Link to="/contact" className="text-light text-decoration-none">Contact</Link></li>
-              <li><Link to="/gallery" className="text-light text-decoration-none">Gallery</Link></li>
-              <li><Link to="/franchise" className="text-light text-decoration-none">Franchise</Link></li>
-            </ul>
+          <div className="footerText">
+            <Link to="/privacy" className="fg">Privacy Policy</Link>
           </div>
-          <div className="col-md-3">
-            <h5>Policies</h5>
-            <ul className="list-unstyled">
-              <li><Link to="/privacy" className="text-light text-decoration-none">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-light text-decoration-none">Terms & Conditions</Link></li>
-              <li><Link to="/refund" className="text-light text-decoration-none">Refund Policy</Link></li>
-            </ul>
+          <div className="footerText">
+            <Link to="/terms" className="fg">Terms & Conditions</Link>
           </div>
-          <div className="col-md-3">
-            <h5>Contact Info</h5>
-            <p className="mb-1">
-              <i className="bi bi-envelope"></i> info@parisbakery.in
-            </p>
-            <p className="mb-1">
-              <i className="bi bi-telephone"></i> 9600128966
-            </p>
-            <p className="mb-1">
-              <i className="bi bi-telephone"></i> 9600128965
-            </p>
-            <div className="mt-3">
-              <h6>Follow Us</h6>
-              <a href="#" className="text-light me-3"><i className="bi bi-facebook"></i></a>
-              <a href="#" className="text-light me-3"><i className="bi bi-instagram"></i></a>
-              <a href="#" className="text-light me-3"><i className="bi bi-twitter"></i></a>
+        </div>
+        
+        <div className="col-md-3">
+          <div className="footerHeader">Help</div>
+          <div className="footerText">
+            <Link to="/refund" className="fg">Refund & Cancellation</Link>
+          </div>
+          <div className="footerText">
+            <Link to="/contact" className="fg">Contact Us</Link>
+          </div>
+        </div>
+
+        <div className="col-md-4" style={{display: 'none'}}>
+          <div className="footerHeader">Download App</div>
+          <div className="playstoreLink">
+            <a href="https://play.google.com/store/apps/details?id=com.pyaris.pyarisbakery" target="_blank" rel="noopener noreferrer">
+              <img className="navbar-app-link" src="/images/webgoogleplay.png" alt="Download Android App"/>
+            </a>
+          </div>
+        </div>
+
+        <div className="col-md-2">
+          <div className="footerHeader">We are Social</div>
+          <div className="fbIconContainer">
+            <a className="fbImageSize" href="https://www.facebook.com/myparisbakery/" target="_blank" rel="noopener noreferrer" aria-label="facebook"></a>
+          </div>
+          <div className="instaIconContainer">
+            <a className="instaImageSize" href="https://www.instagram.com/helloparisbakery/" target="_blank" rel="noopener noreferrer" aria-label="instagram"></a>
+          </div>
+          <div className="linkIconContainer">
+            <a className="linkImageSize" href="https://www.linkedin.com/company/paris-bakery-pvt-ltd/" target="_blank" rel="noopener noreferrer" aria-label="linkedin"></a>
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          <div className="footerHeader">Contact Us</div>
+          <div className="footerText">
+            F/3, Chandaka IE, Chandrasekharpur
+          </div>
+          <div className="footerText">
+            Bhubaneswar, Odisha 751024
+          </div>
+          <div className="footerText">
+            <a href="tel:+918018114444" className="fg">+91-8018114444</a>
+          </div>
+          <div className="footerText">
+            <a href="mailto:info@parisbakery.in" className="fg">info@parisbakery.in</a>
+          </div>
+        </div>
+      </div>
+
+      <div className="footer-bottom-main container-fluid no-padding">
+        <div className="footer-bottom-container row">
+          <div className="col-md-12">
+            <div className="footer-copyright">
+              &copy; 2024 Paris Bakery. All Rights Reserved.
             </div>
           </div>
         </div>
-        <hr className="bg-light mt-4" />
-        <div className="text-center">
-          <p className="mb-0">&copy; 2024 Paris Bakery. All rights reserved.</p>
-        </div>
+      </div>
+
+      {/* WhatsApp Icon */}
+      <div className="whatsapp-icon">
+        <Link to="/whatsapp" target="_blank">
+          <img alt="Send to Whatsapp" title="Send to Whatsapp" src="/images/whatsapp-icon.png" width="100%" height="100%"/>
+        </Link>
       </div>
     </footer>
   );
