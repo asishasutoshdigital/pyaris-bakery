@@ -63,7 +63,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <main className="main-content">
+        <div id="mainBody">
           <Routes>
             {/* Main pages */}
             <Route path="/" element={<HomePage />} />
@@ -132,7 +132,7 @@ function App() {
             <Route path="/error" element={<ErrorPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </main>
+        </div>
         <Footer />
       </div>
     </Router>
