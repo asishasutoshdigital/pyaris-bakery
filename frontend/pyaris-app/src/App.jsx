@@ -1,9 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css';
 
 // Import components
 import Header from './components/Header';
 import Footer from './components/Footer';
+
+// ScrollToTop component to handle scroll on route change
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Reset scroll position on route change
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+}
 
 // Import pages
 import HomePage from './pages/HomePage';
@@ -61,6 +74,7 @@ import VerifyChecksumPage from './pages/VerifyChecksumPage';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <Header />
         <div id="mainBody">

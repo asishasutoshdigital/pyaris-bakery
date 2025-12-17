@@ -1,23 +1,73 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { productAPI } from '../services/api';
 
 function HomePage() {
   const [sliderImages, setSliderImages] = useState([]);
+  const sliderInitialized = useRef(false);
 
   useEffect(() => {
     // Initialize slick slider when component mounts
-    if (window.$ && window.$.fn.slick) {
-      window.$('.slick-center').slick({
-        centerMode: true,
-        centerPadding: '0px',
-        slidesToShow: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        arrows: true,
-        dots: false
-      });
+    const initSlider = () => {
+      // Prevent duplicate initialization
+      if (sliderInitialized.current) {
+        console.log('Slider already initialized');
+        return;
+      }
+      
+      // Check if slider element exists
+      const sliderElement = document.querySelector('.slick-center');
+      if (!sliderElement) {
+        console.log('Slider element not found');
+        return;
+      }
+      
+      // Check if jQuery and slick are available
+      if (window.$ && window.$.fn && window.$.fn.slick) {
+        try {
+          console.log('Initializing slick slider...');
+          window.$('.slick-center').slick({
+            centerMode: true,
+            centerPadding: '0px',
+            slidesToShow: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            arrows: true,
+            dots: false
+          });
+          sliderInitialized.current = true;
+          console.log('Slider initialized successfully');
+        } catch (error) {
+          console.error('Slick slider initialization error:', error);
+        }
+      } else {
+        console.log('jQuery or slick not available');
+      }
+    };
+
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'complete') {
+      // DOM already loaded, wait a bit for jQuery/slick
+      setTimeout(initSlider, 100);
+    } else {
+      // Wait for load event
+      window.addEventListener('load', initSlider);
     }
+
+    // Cleanup function - destroy slider on unmount
+    return () => {
+      if (sliderInitialized.current && window.$ && window.$('.slick-center').length > 0) {
+        try {
+          if (window.$('.slick-center').hasClass('slick-initialized')) {
+            console.log('Destroying slider...');
+            window.$('.slick-center').slick('unslick');
+            sliderInitialized.current = false;
+          }
+        } catch (error) {
+          console.error('Slick slider cleanup error:', error);
+        }
+      }
+    };
   }, []);
 
   return (
