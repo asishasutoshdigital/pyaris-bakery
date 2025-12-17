@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
-import { useCartStore, useUserStore } from '../store/useStore';
+import { useCartStore, useUserStore, useLocationStore } from '../store/useStore';
 
 function Header() {
   const cartQuantity = useCartStore((state) => state.cartQuantity);
   const { isAuthenticated, user, logout } = useUserStore();
+  const { selectedPincode, selectedArea, openPopup } = useLocationStore();
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleLocationClick = () => {
+    openPopup();
   };
 
   return (
@@ -28,16 +33,18 @@ function Header() {
 
               {/* Pincode dropdown */}
               <div className="pincode-select">
-                <div className="custom-dropdown">
-                  <label id="areaLabel"></label>
+                <div className="custom-dropdown" onClick={handleLocationClick} style={{cursor: 'pointer'}}>
+                  <label id="areaLabel">{selectedArea || ''}</label>
                   <i className="fas fa-map-marker-alt icon"></i>
                   <input 
                     list="pincodeList" 
                     id="pincode" 
                     name="pincode" 
                     readOnly  
-                    style={{border: 'none', outline: 'none'}} 
-                    placeholder="Search locality" 
+                    style={{border: 'none', outline: 'none', cursor: 'pointer'}} 
+                    placeholder="Search locality"
+                    value={selectedPincode || ''}
+                    onClick={handleLocationClick}
                   />
                 </div>
               </div>

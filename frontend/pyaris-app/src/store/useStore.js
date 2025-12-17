@@ -127,3 +127,35 @@ export const useAppStore = create((set) => ({
       setSelectedGroup: (group) => set({ selectedGroup: group }),
       setSelectedSubGroup: (subGroup) => set({ selectedSubGroup: subGroup }),
 }));
+
+// Location Store with persistence (for pincode/area selection)
+export const useLocationStore = create(
+  persist(
+    (set) => ({
+      selectedPincode: null,
+      selectedArea: null,
+      isPopupOpen: false,
+      hasSelectedLocation: false,
+      
+      setLocation: (area, pincode) => set({
+        selectedPincode: pincode,
+        selectedArea: area,
+        hasSelectedLocation: true,
+        isPopupOpen: false
+      }),
+      
+      openPopup: () => set({ isPopupOpen: true }),
+      closePopup: () => set({ isPopupOpen: false }),
+      
+      clearLocation: () => set({
+        selectedPincode: null,
+        selectedArea: null,
+        hasSelectedLocation: false
+      })
+    }),
+    {
+      name: 'location-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);

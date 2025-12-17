@@ -5,6 +5,8 @@ import './App.css';
 // Import components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import LocationPopup from './components/LocationPopup';
+import { useLocationStore } from './store/useStore';
 
 // Memoize Header and Footer to prevent unnecessary re-renders
 const MemoizedHeader = memo(Header);
@@ -18,6 +20,25 @@ function ScrollToTop() {
     // Reset scroll position on route change
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  return null;
+}
+
+// LocationPopupTrigger component to auto-open popup on first visit
+function LocationPopupTrigger() {
+  const { hasSelectedLocation, openPopup } = useLocationStore();
+
+  useEffect(() => {
+    // Auto-open popup on first visit if no location selected
+    // Wait for page to fully load
+    const timer = setTimeout(() => {
+      if (!hasSelectedLocation) {
+        openPopup();
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []); // Only run once on mount
 
   return null;
 }
@@ -79,6 +100,8 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <LocationPopupTrigger />
+      <LocationPopup />
       <div className="App">
         <MemoizedHeader />
         <div id="mainBody">
