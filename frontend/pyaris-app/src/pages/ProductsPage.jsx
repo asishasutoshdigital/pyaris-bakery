@@ -9,23 +9,27 @@ function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [displayHeader, setDisplayHeader] = useState('');
   
-  const group = searchParams.get('group') || '';
-  const subgroup = searchParams.get('subgroup') || '';
+  // Support both old ASPX parameters (xdt, grp) and new parameters (subgroup, group)
+  const xdt = searchParams.get('xdt') || searchParams.get('subgroup') || '';
+  const grp = searchParams.get('grp') || searchParams.get('group') || '';
+  const isFlavour = searchParams.get('isFlavour') === 'true';
 
   useEffect(() => {
     loadProducts();
-  }, [group, subgroup]);
+  }, [xdt, grp, isFlavour]);
 
   const loadProducts = async () => {
     setLoading(true);
     try {
       let response;
-      if (subgroup) {
-        response = await productAPI.getBySubgroup(subgroup, { grp: group });
-        setDisplayHeader(subgroup);
-      } else if (group) {
-        response = await productAPI.getByGroup(group);
-        setDisplayHeader(group);
+      if (xdt) {
+        // Use xdt (subgroup) as the primary filter
+        response = await productAPI.getBySubgroup(xdt, { grp, isFlavour });
+        setDisplayHeader(xdt);
+      } else if (grp) {
+        // Fallback to group filter if only grp is provided
+        response = await productAPI.getByGroup(grp);
+        setDisplayHeader(grp);
       } else {
         response = await productAPI.getAll();
         setDisplayHeader('All Products');
@@ -64,17 +68,20 @@ function ProductsPage() {
                 <div className="productcard">
                   <div className="productcard-image">
                     <img
-                      src={product.imagePath || `/menupic/small/${product.id}s.png`}
-                      alt={product.menuName}
-                      className="img-responsive"
+                      src={`/menupic/small/${product.id}s.png`}
+                      alt={`${product.menuName} - Paris bakery`}
+                      className="img-responsive product-image"
+                      width="100%"
+                      height="100%"
                       onError={(e) => {
                         e.target.src = '/images/svg-icons/img-placeholder.svg';
                       }}
                     />
                   </div>
+                  <div className="veg-symbol"></div>
                   <div className="product-card-title">{product.menuName}</div>
                   <div className="product-card-price">
-                    ₹ {product.sellPrice} / {product.unit}
+                    <img src="/images/svg-icons/rupees.svg" alt="Rs" width="7.5px" height="11.2px" /> {product.sellPrice}
                   </div>
                 </div>
               </Link>

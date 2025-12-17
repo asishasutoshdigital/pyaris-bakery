@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 // Generate session ID (similar to randompin.Generate(20) in original)
 const generateSessionId = () => {
@@ -10,8 +11,10 @@ const generateSessionId = () => {
   return result;
 };
 
-// Cart Store
-export const useCartStore = create((set, get) => ({
+// Cart Store with persistence
+export const useCartStore = create(
+  persist(
+    (set, get) => ({
       cart: [],
       cartQuantity: 0,
       sessionId: generateSessionId(),
@@ -75,10 +78,18 @@ export const useCartStore = create((set, get) => ({
           return total + (parseFloat(item.sellPrice || 0) * item.quantity);
         }, 0);
       }
-}));
+    }),
+    {
+      name: 'cart-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
 
-// User Store
-export const useUserStore = create((set) => ({
+// User Store with persistence
+export const useUserStore = create(
+  persist(
+    (set) => ({
       user: null,
       isAuthenticated: false,
       sessionId: null,
@@ -98,7 +109,13 @@ export const useUserStore = create((set) => ({
       updateProfile: (userData) => set((state) => ({
         user: { ...state.user, ...userData }
       }))
-}));
+    }),
+    {
+      name: 'user-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
 
 // App Store (for global app state like selected pincode, etc.)
 export const useAppStore = create((set) => ({
