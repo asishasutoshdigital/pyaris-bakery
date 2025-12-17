@@ -15,8 +15,8 @@ function HomePage() {
         return;
       }
       
-      // Check if slider element exists
-      const sliderElement = document.querySelector('.slick-center');
+      // Check if slider element exists - get specific element, not global selector
+      const sliderElement = document.querySelector('.home-page .slick-center');
       if (!sliderElement) {
         console.log('Slider element not found');
         return;
@@ -26,14 +26,19 @@ function HomePage() {
       if (window.$ && window.$.fn && window.$.fn.slick) {
         try {
           console.log('Initializing slick slider...');
-          window.$('.slick-center').slick({
+          // Initialize ONLY on this specific element
+          window.$(sliderElement).slick({
             centerMode: true,
             centerPadding: '0px',
             slidesToShow: 1,
             autoplay: true,
             autoplaySpeed: 3000,
             arrows: true,
-            dots: false
+            dots: false,
+            // Add settings to prevent global interference
+            useCSS: true,
+            useTransform: true,
+            accessibility: false
           });
           sliderInitialized.current = true;
           console.log('Slider initialized successfully');
@@ -56,11 +61,12 @@ function HomePage() {
 
     // Cleanup function - destroy slider on unmount
     return () => {
-      if (sliderInitialized.current && window.$ && window.$('.slick-center').length > 0) {
+      const sliderElement = document.querySelector('.home-page .slick-center');
+      if (sliderInitialized.current && sliderElement && window.$) {
         try {
-          if (window.$('.slick-center').hasClass('slick-initialized')) {
+          if (window.$(sliderElement).hasClass('slick-initialized')) {
             console.log('Destroying slider...');
-            window.$('.slick-center').slick('unslick');
+            window.$(sliderElement).slick('unslick');
             sliderInitialized.current = false;
           }
         } catch (error) {
