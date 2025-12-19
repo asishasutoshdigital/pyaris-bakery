@@ -12,7 +12,6 @@ function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [weight, setWeight] = useState('0.5');
-  const [flavour, setFlavour] = useState('');
   const [message, setMessage] = useState('');
   const [currentPrice, setCurrentPrice] = useState(0);
   const [isCake, setIsCake] = useState(false);
@@ -152,7 +151,6 @@ function ProductDetailsPage() {
       ...product,
       quantity: quantity,
       weight: isCake ? weight : null,
-      flavour: flavour || null,
       message: message || null,
       finalPrice: currentPrice
     };
@@ -205,16 +203,13 @@ function ProductDetailsPage() {
           <meta itemProp="brand" content="Paris Bakery" />
           <meta itemProp="url" content={window.location.href} />
           
-          {/* Left section - Images (ASPX lines 116-143) */}
+ {/* LEFT IMAGE */}
           <div className="col-md-6 login-container">
-            <meta itemProp="image" content={`/menupic/big/${product.id}b.png`} />
-            
             <div className="imgBox" id="ximgshowser">
-              <img 
-                alt="Placeholder"
+              <img
                 id="bigimg"
                 className="imgBoxImageSize"
-                src={`/menupic/big/${product.id}b.png`}
+                src={`/images/productimages/${product.menuName}-1.jpg`}
                 onError={(e) => e.target.src = '/images/svg-icons/img-placeholder.svg'}
               />
               <div id="zoomResult"></div>
@@ -223,35 +218,20 @@ function ProductDetailsPage() {
             </div>
 
             <div className="row smallimgBox">
-              <ul id="prodImages" style={{ display: 'flex', listStyle: 'none', padding: 0, margin: 0 }}>
-                <li id="ProductThumbnail_1" style={{ marginRight: '10px' }}>
-                  <div className="smallimgBoxImageSize" id="ximgsmall1" onClick={(e) => smallimgclick(e.currentTarget)}>
-                    <img 
-                      alt="Thumbnail"
-                      src={`/menupic/big/${product.id}b.png`}
-                      className="smallimgBoxImageSize"
-                      onError={(e) => e.target.src = '/images/svg-icons/img-placeholder.svg'}
-                    />
+              <ul id="prodImages">
+                <li>
+                  <div className="smallimgBoxImageSize" onClick={(e) => smallimgclick(e.currentTarget)}>
+                    <img src={`/images/productimages/${product.menuName}-1.jpg`} />
                   </div>
                 </li>
-                <li id="ProductThumbnail_2" style={{ marginRight: '10px' }}>
-                  <div className="smallimgBoxImageSize" id="ximgsmall2" onClick={(e) => smallimgclick(e.currentTarget)}>
-                    <img 
-                      alt="Thumbnail"
-                      src={`/menupic/big/${product.id}b.png`}
-                      className="smallimgBoxImageSize"
-                      onError={(e) => e.target.src = '/images/svg-icons/img-placeholder.svg'}
-                    />
+                <li>
+                  <div className="smallimgBoxImageSize" onClick={(e) => smallimgclick(e.currentTarget)}>
+                    <img src={`/images/productimages/${product.menuName}-2.jpg`} />
                   </div>
                 </li>
-                <li id="ProductThumbnail_3">
-                  <div className="smallimgBoxImageSize" id="ximgsmall3" onClick={(e) => smallimgclick(e.currentTarget)}>
-                    <img 
-                      alt="Thumbnail"
-                      src={`/menupic/big/${product.id}b.png`}
-                      className="smallimgBoxImageSize"
-                      onError={(e) => e.target.src = '/images/svg-icons/img-placeholder.svg'}
-                    />
+                <li>
+                  <div className="smallimgBoxImageSize" onClick={(e) => smallimgclick(e.currentTarget)}>
+                    <img src={`/images/productimages/${product.menuName}-b.jpg`} />
                   </div>
                 </li>
               </ul>
@@ -276,8 +256,6 @@ function ProductDetailsPage() {
                 {product.group}
               </div>
               
-              <img src="/images/out.png" width="180" alt="Out" className="nooutline" />
-              
               <div id="xrate" className="xrate" itemProp="offers" itemScope itemType="https://schema.org/Offer">
                 Rs {currentPrice}
               </div>
@@ -298,33 +276,6 @@ function ProductDetailsPage() {
                       onKeyPress={allowOnlyNumbers}
                       placeholder="Enter weight in Kg"
                     />
-                  </div>
-                </div>
-              )}
-              
-              {/* Flavour section (ASPX lines 173-181) - Only for cakes */}
-              {isCake && (
-                <div id="x3" className="row">
-                  <div className="col-md-12 product-prop-heading">
-                    Flavour
-                  </div>
-                  <div className="col-md-6">
-                    <select
-                      id="xflavourname"
-                      className="timerx form-control"
-                      value={flavour}
-                      onChange={(e) => setFlavour(e.target.value)}
-                    >
-                      <option value="">Select Flavour</option>
-                      <option value="Vanilla">Vanilla</option>
-                      <option value="Chocolate">Chocolate</option>
-                      <option value="Strawberry">Strawberry</option>
-                      <option value="Butterscotch">Butterscotch</option>
-                      <option value="Pineapple">Pineapple</option>
-                      <option value="Black Forest">Black Forest</option>
-                      <option value="Red Velvet">Red Velvet</option>
-                      <option value="Mixed Fruit">Mixed Fruit</option>
-                    </select>
                   </div>
                 </div>
               )}

@@ -6,10 +6,12 @@ namespace PyarisAPI.Services
     public class NotificationService
     {
         private readonly string _connectionString;
+        private readonly LogService _logService;
 
-        public NotificationService(IConfiguration configuration)
+        public NotificationService(IConfiguration configuration, LogService logService)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
+            _logService = logService;
         }
 
         public void SaveNotification(string message)
@@ -20,13 +22,14 @@ namespace PyarisAPI.Services
                 {
                     cn.Open();
                     var cmd = new SqlCommand(
-                        $"insert into [Notification] values ('{DateTime.UtcNow.AddHours(5.5).ToString("dd-MM-yyyy")}','{message.ToUpper().Replace("'", "''")}')", 
+                        $"insert into [Notification] values ('{DateTime.UtcNow.AddHours(5.5):dd-MM-yyyy}','{message.ToUpper().Replace("'", "''")}')",
                         cn);
+
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    LogService.Error("Error saving notification", ex);
+                    _logService.Error("Error saving notification", ex);
                 }
             }
         }
@@ -34,23 +37,30 @@ namespace PyarisAPI.Services
         public List<string> GetRecentNotifications(int count = 10)
         {
             var notifications = new List<string>();
+
             using (var cn = new SqlConnection(_connectionString))
             {
                 try
                 {
                     cn.Open();
-                    var cmd = new SqlCommand($"SELECT TOP {count} [Message] FROM [Notification] ORDER BY [Date] DESC", cn);
-                    var dr = cmd.ExecuteReader();
-                    while (dr.Read())
+                    var cmd = new SqlCommand(
+                        $"SELECT TOP {count} [Message] FROM [Notification] ORDER BY [Date] DESC",
+                        cn);
+
+                    using (var dr = cmd.ExecuteReader())
                     {
-                        notifications.Add(dr[0].ToString() ?? "");
+                        while (dr.Read())
+                        {
+                            notifications.Add(dr[0]?.ToString() ?? "");
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogService.Error("Error fetching notifications", ex);
+                    _logService.Error("Error fetching notifications", ex);
                 }
             }
+
             return notifications;
         }
     }

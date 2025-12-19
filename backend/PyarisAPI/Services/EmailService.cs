@@ -10,13 +10,17 @@ namespace PyarisAPI.Services
     {
         private readonly string _connectionString;
         private readonly IConfiguration _configuration;
+        private readonly LogService _logService;
+
         private readonly string _emailUserName;
         private readonly string _emailPassword;
         private readonly string _emailEnvironment;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IConfiguration configuration, LogService logService)
         {
             _configuration = configuration;
+            _logService = logService;
+
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
             _emailUserName = configuration["Email:UserName"] ?? "";
             _emailPassword = configuration["Email:Password"] ?? "";
@@ -29,19 +33,22 @@ namespace PyarisAPI.Services
             {
                 var mimeMessage = new MimeMessage();
                 mimeMessage.From.Add(new MailboxAddress("Paris Bakery", _emailUserName));
-                
+
                 if (!string.IsNullOrEmpty(to))
                 {
                     var mailboxAddresses = new List<MailboxAddress>();
                     string[] values = to.Split(';');
+
                     foreach (var email in values)
                     {
                         var trimmedEmail = email.Trim();
                         if (!string.IsNullOrEmpty(trimmedEmail))
                         {
-                            mailboxAddresses.Add(new MailboxAddress(trimmedEmail, trimmedEmail));
+                            mailboxAddresses.Add(
+                                new MailboxAddress(trimmedEmail, trimmedEmail));
                         }
                     }
+
                     mimeMessage.To.AddRange(mailboxAddresses);
                 }
 
@@ -53,8 +60,17 @@ namespace PyarisAPI.Services
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     client.CheckCertificateRevocation = false;
-                    client.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
-                    await client.ConnectAsync("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+                    client.SslProtocols =
+                        SslProtocols.Ssl3 |
+                        SslProtocols.Tls |
+                        SslProtocols.Tls11 |
+                        SslProtocols.Tls12;
+
+                    await client.ConnectAsync(
+                        "smtp.office365.com",
+                        587,
+                        SecureSocketOptions.StartTls);
+
                     await client.AuthenticateAsync(_emailUserName, _emailPassword);
                     await client.SendAsync(mimeMessage);
                     await client.DisconnectAsync(true);
@@ -62,7 +78,7 @@ namespace PyarisAPI.Services
             }
             catch (Exception ex)
             {
-                LogService.Error("Error sending email", ex);
+                _logService.Error("Error sending email", ex);
                 throw;
             }
         }
@@ -70,23 +86,28 @@ namespace PyarisAPI.Services
         public string FetchEmail(string username)
         {
             string email = "";
+
             using (var cn = new SqlConnection(_connectionString))
             {
                 try
                 {
                     cn.Open();
-                    var cmd = new SqlCommand($"select [Email] from [xUser Details] where [Mobile No]='{username.Replace("'", "''")}'", cn);
+                    var cmd = new SqlCommand(
+                        $"select [Email] from [xUser Details] where [Mobile No]='{username.Replace("'", "''")}'",
+                        cn);
+
                     var dr = cmd.ExecuteReader();
-                    if (dr.HasRows && dr.Read())
+                    if (dr.Read())
                     {
-                        email = dr[0].ToString() ?? "";
+                        email = dr[0]?.ToString() ?? "";
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogService.Error("Error fetching email", ex);
+                    _logService.Error("Error fetching email", ex);
                 }
             }
+
             return email;
         }
     }

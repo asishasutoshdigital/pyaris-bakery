@@ -4,34 +4,33 @@ namespace PyarisAPI.Services
 {
     public class LogService
     {
-        private static readonly LogService _instance = new LogService();
-        protected ILog ExceptionLogger;
-        protected static ILog debugLogger;
+        private readonly ILog _exceptionLogger;
+        private readonly ILog _debugLogger;
 
-        private LogService()
+        public LogService()
         {
-            ExceptionLogger = LogManager.GetLogger("MonitoringLogger");
-            debugLogger = LogManager.GetLogger("DebugLogger");
+            _exceptionLogger = LogManager.GetLogger("MonitoringLogger");
+            _debugLogger = LogManager.GetLogger("DebugLogger");
         }
 
-        public static void Debug(string message)
+        public void Debug(string message)
         {
-            debugLogger?.Debug(message);
+            _debugLogger?.Debug(message);
         }
 
-        public static void Debug(string message, Exception exception)
+        public void Debug(string message, Exception exception)
         {
-            debugLogger?.Debug(message, exception);
+            _debugLogger?.Debug(message, exception);
         }
 
-        public static void Error(string message)
+        public void Error(string message)
         {
-            _instance.ExceptionLogger?.Error(message);
+            _exceptionLogger?.Error(message);
         }
 
-        public static void Error(string message, Exception exception)
+        public void Error(string message, Exception exception)
         {
-            _instance.ExceptionLogger?.Error(message, exception);
+            _exceptionLogger?.Error(message, exception);
         }
     }
 }

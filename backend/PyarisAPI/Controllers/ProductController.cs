@@ -83,9 +83,33 @@ namespace PyarisAPI.Controllers
                 using (var cn = new SqlConnection(_connectionString))
                 {
                     cn.Open();
-                    var cmd = new SqlCommand($"SELECT [id],[menu name],[Barcode],[Group],[Sub Group],[Feature 1],[Feature 2],[Feature 3],[Feature 4],[Cost Price],[Sell Price],[Tax],[Stock],[Discount Type],[Discount Value],[Min Weight],[Flavour],[active],[Modified Date] FROM [XMaster Menu] WHERE [id]='{id.Replace("'", "''")}'", cn);
+
+                    var cmd = new SqlCommand(@"
+                SELECT 
+                    [id],
+                    [menu name],
+                    [Barcode],
+                    [Group],
+                    [Sub Group],
+                    [Feature 1],
+                    [Feature 2],
+                    [Feature 3],
+                    [Feature 4],
+                    [Cost Price],
+                    [Sell Price],
+                    [Stock],
+                    [Discount Type],
+                    [Discount Value],
+                    [Min Weight],
+                    [Flavour],
+                    [active]
+                FROM [XMaster Menu]
+                WHERE [id] = @id", cn);
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
                     var dr = cmd.ExecuteReader();
-                    
+
                     if (dr.Read())
                     {
                         var product = new ProductModel
@@ -101,18 +125,17 @@ namespace PyarisAPI.Controllers
                             Feature4 = dr[8].ToString() ?? "",
                             CostPrice = dr[9].ToString() ?? "",
                             SellPrice = dr[10].ToString() ?? "",
-                            Tax = dr[11].ToString() ?? "",
-                            Stock = dr[12].ToString() ?? "",
-                            DiscountType = dr[13].ToString() ?? "",
-                            DiscountValue = dr[14].ToString() ?? "",
-                            MinWeight = dr[15].ToString() ?? "",
-                            Flavour = dr[16].ToString() ?? "",
-                            Active = dr[17].ToString() ?? "",
-                            ModifiedDate = dr[18].ToString() ?? ""
+                            Stock = dr[11].ToString() ?? "",
+                            DiscountType = dr[12].ToString() ?? "",
+                            DiscountValue = dr[13].ToString() ?? "",
+                            MinWeight = dr[14].ToString() ?? "",
+                            Flavour = dr[15].ToString() ?? "",
+                            Active = dr[16].ToString() ?? ""
                         };
+
                         return Ok(product);
                     }
-                    
+
                     return NotFound();
                 }
             }
@@ -122,6 +145,7 @@ namespace PyarisAPI.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
 
         /// <summary>
         /// Get all products

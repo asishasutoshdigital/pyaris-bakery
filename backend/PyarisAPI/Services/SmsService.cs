@@ -5,6 +5,8 @@ namespace PyarisAPI.Services
     public class SmsService
     {
         private readonly IConfiguration _configuration;
+        private readonly LogService _logService;
+
         private readonly string _smsUrl;
         private readonly string _smsUserName;
         private readonly string _smsPassword;
@@ -15,9 +17,11 @@ namespace PyarisAPI.Services
         private readonly string _smsRoute;
         private readonly string _smsPeid;
 
-        public SmsService(IConfiguration configuration)
+        public SmsService(IConfiguration configuration, LogService logService)
         {
             _configuration = configuration;
+            _logService = logService;
+
             _smsUrl = configuration["SMS:Url"] ?? "";
             _smsUserName = configuration["SMS:UserName"] ?? "";
             _smsPassword = configuration["SMS:Password"] ?? "";
@@ -56,18 +60,21 @@ namespace PyarisAPI.Services
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
                     var content = await response.Content.ReadAsStringAsync();
-                    LogService.Debug($"SMS sent successfully to {to}: {content}");
+
+                    _logService.Debug($"SMS sent successfully to {to}: {content}");
                 }
             }
             catch (Exception ex)
             {
-                LogService.Error($"Error sending SMS to {to}", ex);
+                _logService.Error($"Error sending SMS to {to}", ex);
             }
         }
 
         public async Task SendOrderNotificationAsync(string to, string orderNo, string templateId)
         {
-            string message = $"Your order {orderNo} has been placed successfully at Paris Bakery. Thank you!";
+            string message =
+                $"Your order {orderNo} has been placed successfully at Paris Bakery. Thank you!";
+
             await SendSmsAsync(to, message, templateId);
         }
     }

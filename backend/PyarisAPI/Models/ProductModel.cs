@@ -13,13 +13,11 @@ namespace PyarisAPI.Models
         public string Feature4 { get; set; } = string.Empty;
         public string CostPrice { get; set; } = string.Empty;
         public string SellPrice { get; set; } = string.Empty;
-        public string Tax { get; set; } = string.Empty;
         public string Stock { get; set; } = string.Empty;
         public string DiscountType { get; set; } = string.Empty;
         public string DiscountValue { get; set; } = string.Empty;
         public string MinWeight { get; set; } = string.Empty;
         public string Flavour { get; set; } = string.Empty;
         public string Active { get; set; } = string.Empty;
-        public string ModifiedDate { get; set; } = string.Empty;
     }
 }
