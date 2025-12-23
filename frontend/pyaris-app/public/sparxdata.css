@@ -1,0 +1,95 @@
+﻿@font-face {
+    font-family: 'Playball';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Playball'), local('Playball-Regular'), url(https://fonts.gstatic.com/s/playball/v6/qxC1Yj_4IUZ_PO35Va79QxTbgVql8nDJpwnrE27mub0.woff2) format('woff2');
+    unicode-range: U-0100-024F, U-1E00-1EFF, U-20A0-20AB, U-20AD-20CF, U-2C60-2C7F, U-A720-A7FF;
+}
+/* latin */
+@font-face {
+    font-family: 'Playball';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Playball'), local('Playball-Regular'), url(https://fonts.gstatic.com/s/playball/v6/sSjR6AJRrIl2FxjhncYng_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U-0000-00FF, U-0131, U-0152-0153, U-02C6, U-02DA, U-02DC, U-2000-206F, U-2074, U-20AC, U-2212, U-2215, U-E0FF, U-EFFD, U-F000;
+}
+
+html, body, form {
+    background-color: #f7f7f7;
+    color: #2B2929;
+    font-family: 'Segoe UI';
+    font-size: small;
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+}
+
+
+/* CSSTerm.com Flyout CSS menu */
+
+#flyout_menu {
+    font-weight: 600;
+    /*width: 250px;*/
+}
+
+    #flyout_menu ul, li {
+        list-style: none;
+        margin: 0;
+        padding: 5px 10px;
+    }
+
+        #flyout_menu ul li.hover,
+        #flyout_menu ul li:hover {
+            position: relative;
+            z-index: 599;
+        }
+
+        #flyout_menu ul ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 598;
+   
+        }
+
+#flyout_menu ul li:hover > ul {
+            visibility: visible;
+        }
+
+        #flyout_menu ul ul {
+            top: 0;
+            left: 100%;
+        }
+
+    #flyout_menu span, #flyout_menu a {
+        display: inline-block;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    #flyout_menu li {
+        background: White;
+    }
+
+        #flyout_menu li:hover, #flyout_menu li.active {
+            background: #E9E8E7;
+        }
+
+    #flyout_menu a {
+        color: #3E3C3E;
+        line-height: 160%;
+        padding: 16px 8px 16px 20px;
+        width: 250px;
+    }
+
+    #flyout_menu ul ul li, #flyout_menu ul ul li a {
+        background: #E9E8E7;
+    }
+        #flyout_menu ul ul li a {
+            border-bottom: 1px solid White;
+        }
+
+        #flyout_menu ul ul li:hover, #flyout_menu ul ul li a:hover {
+            background: White;
+        }

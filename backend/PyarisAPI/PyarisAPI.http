@@ -1,0 +1,6 @@
+@PyarisAPI_HostAddress = http://localhost:5045
+
+GET {{PyarisAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
