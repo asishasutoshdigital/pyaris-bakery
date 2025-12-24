@@ -7,35 +7,35 @@ import {
 import { useEffect, memo } from "react";
 import "./App.css";
 
+// ✅ ADD THIS
+import { useAuthStore } from "./store/useAuthStore";
+
 // Import components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LocationPopup from "./components/LocationPopup";
 import { useLocationStore } from "./store/useStore";
 
-// Memoize Header and Footer to prevent unnecessary re-renders
+// Memoize Header and Footer
 const MemoizedHeader = memo(Header);
 const MemoizedFooter = memo(Footer);
 
-// ScrollToTop component to handle scroll on route change
+// ScrollToTop
 function ScrollToTop() {
   const location = useLocation();
 
   useEffect(() => {
-    // Reset scroll position on route change
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return null;
 }
 
-// LocationPopupTrigger component to auto-open popup on first visit
+// LocationPopupTrigger
 function LocationPopupTrigger() {
   const { hasSelectedLocation, openPopup } = useLocationStore();
 
   useEffect(() => {
-    // Auto-open popup on first visit if no location selected
-    // Wait for page to fully load
     const timer = setTimeout(() => {
       if (!hasSelectedLocation) {
         openPopup();
@@ -43,12 +43,12 @@ function LocationPopupTrigger() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []); // Only run once on mount
+  }, []);
 
   return null;
 }
 
-// Import pages
+// Pages
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
@@ -102,29 +102,36 @@ import GenerateChecksumPage from "./pages/GenerateChecksumPage";
 import VerifyChecksumPage from "./pages/VerifyChecksumPage";
 
 function App() {
+  // ✅ LOAD USER LIKE ASPX SESSION
+  const loadUser = useAuthStore((state) => state.loadUser);
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />
       <LocationPopupTrigger />
       <LocationPopup />
+
       <div className="App">
         <MemoizedHeader />
+
         <div id="mainBody">
           <Routes>
-            {/* Main pages */}
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
-
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
 
-            {/* Auth pages */}
+            {/* Auth */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-            {/* Info pages */}
+            {/* Info */}
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
@@ -133,11 +140,11 @@ function App() {
             <Route path="/refund" element={<RefundPage />} />
             <Route path="/franchise" element={<FranchisePage />} />
 
-            {/* Order pages */}
+            {/* Orders */}
             <Route path="/order/success" element={<OrderSuccessPage />} />
             <Route path="/order/failed" element={<OrderFailPage />} />
 
-            {/* User pages */}
+            {/* User */}
             <Route path="/profile" element={<MyProfilePage />} />
             <Route path="/my-account" element={<MyAccountPage />} />
             <Route path="/rewards" element={<RewardsPage />} />
@@ -145,50 +152,29 @@ function App() {
             {/* Search */}
             <Route path="/search" element={<SearchPage />} />
 
-            {/* Admin pages */}
+            {/* Admin */}
             <Route path="/admin/products" element={<AdminProductsPage />} />
-            <Route
-              path="/admin/products/edit/:id"
-              element={<AdminEditProductPage />}
-            />
+            <Route path="/admin/products/edit/:id" element={<AdminEditProductPage />} />
             <Route path="/admin/customers" element={<AdminCustomersPage />} />
-            <Route
-              path="/admin/orders/pending"
-              element={<AdminPendingOrdersPage />}
-            />
-            <Route
-              path="/admin/orders/store"
-              element={<AdminStoreOrdersPage />}
-            />
+            <Route path="/admin/orders/pending" element={<AdminPendingOrdersPage />} />
+            <Route path="/admin/orders/store" element={<AdminStoreOrdersPage />} />
             <Route path="/admin/banner" element={<AdminUpdateBannerPage />} />
             <Route path="/admin/reports" element={<AdminServiceReportPage />} />
             <Route path="/admin/billing" element={<AdminGenerateBillPage />} />
             <Route path="/admin/sales" element={<AdminSalesPage />} />
             <Route path="/admin/stock" element={<AdminStockPage />} />
 
-            {/* Payment pages */}
+            {/* Payments */}
             <Route path="/payment/phonepe/init" element={<VPayInitPage />} />
-            <Route
-              path="/payment/phonepe/redirect"
-              element={<VPayRedirectPage />}
-            />
-            <Route
-              path="/payment/phonepe/verify"
-              element={<VPayVerifyPage />}
-            />
+            <Route path="/payment/phonepe/redirect" element={<VPayRedirectPage />} />
+            <Route path="/payment/phonepe/verify" element={<VPayVerifyPage />} />
             <Route path="/payment/phonepe/hash" element={<VPayHashPage />} />
             <Route path="/payment/paytm/init" element={<VPayInitPaytmPage />} />
             <Route path="/payment/gateway" element={<PaymentGatewayPage />} />
-            <Route
-              path="/payment/checksum/generate"
-              element={<GenerateChecksumPage />}
-            />
-            <Route
-              path="/payment/checksum/verify"
-              element={<VerifyChecksumPage />}
-            />
+            <Route path="/payment/checksum/generate" element={<GenerateChecksumPage />} />
+            <Route path="/payment/checksum/verify" element={<VerifyChecksumPage />} />
 
-            {/* Misc pages */}
+            {/* Misc */}
             <Route path="/whatsapp" element={<WhatsAppPage />} />
             <Route path="/online" element={<OnlinePage />} />
             <Route path="/demo" element={<DemoPage />} />
@@ -196,11 +182,12 @@ function App() {
             <Route path="/sales" element={<SalesPage />} />
             <Route path="/custom-error" element={<CustomErrorPage />} />
 
-            {/* Error pages */}
+            {/* Errors */}
             <Route path="/error" element={<ErrorPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
+
         <MemoizedFooter />
       </div>
     </Router>

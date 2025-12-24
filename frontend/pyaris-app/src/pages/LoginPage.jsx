@@ -1,63 +1,100 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { authAPI } from "../services/api";
+import { useAuthStore } from "../store/useAuthStore";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [searchParams] = useSearchParams();
 
+  const login = useAuthStore((state) => state.login);
+
+  const [mobile, setMobile] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [mobileError, setMobileError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const redirectTo = searchParams.get("redirect"); // 🔥 IMPORTANT
+
+  /* -------- Allow only numbers -------- */
   const allowOnlyNumbers = (e) => {
-    const charCode = e.which ? e.which : e.keyCode;
-    if (charCode < 48 || charCode > 57) {
-      e.preventDefault();
-    }
+    const code = e.which ? e.which : e.keyCode;
+    if (code < 48 || code > 57) e.preventDefault();
   };
 
-  const handleContinue = (e) => {
+  /* -------- CONTINUE (ASPX ContinueBtnClicked) -------- */
+  const handleContinue = async (e) => {
     e.preventDefault();
-    setUsernameError('');
-    
-    if (username.length !== 10) {
-      setUsernameError('Please enter a valid 10-digit mobile number');
+    setMobileError("");
+    setPasswordError("");
+
+    if (mobile.length !== 10) {
+      setMobileError("Please enter valid Mobile number");
       return;
     }
-    
-    // Show password section
-    setShowPassword(true);
+
+    try {
+      setLoading(true);
+
+      const res = await authAPI.checkUser({
+        MobileNo: mobile,
+      });
+
+      if (res.data.exists) {
+        setShowPassword(true); // show password section
+      } else {
+        // same as Response.Redirect("Register.aspx")
+        navigate("/register", { state: { mobile } });
+      }
+    } catch {
+      Swal.fire("Error", "Unable to verify the number", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  /* -------- LOGIN (ASPX LoginandProceed) -------- */
   const handleLogin = async (e) => {
     e.preventDefault();
-    setPasswordError('');
-    
+    setPasswordError("");
+
     if (!password) {
-      setPasswordError('Please enter your password');
+      setPasswordError("Please enter password");
       return;
     }
-    
+
     try {
-      // TODO: Implement actual login API call
-      // const response = await authAPI.login({ mobile: username, password });
-      
-      Swal.fire({
-        title: 'Success!',
-        text: 'Login successful',
-        icon: 'success'
+      setLoading(true);
+
+      const res = await authAPI.login({
+        MobileNo: mobile,
+        Password: password,
       });
-      
-      // Navigate to home or previous page
-      navigate('/');
-    } catch (error) {
-      setPasswordError('Invalid username or password');
-      Swal.fire({
-        title: 'Error',
-        text: 'Login failed. Please check your credentials.',
-        icon: 'error'
-      });
+
+      if (res.data.success) {
+        // ✅ STORE USER
+        login(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        Swal.fire("Success", "Login successful", "success");
+
+        // ✅ ASPX REDIRECT LOGIC
+        if (redirectTo) {
+          navigate("/" + redirectTo, { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
+      }
+    } catch {
+      setPasswordError(
+        "The mobile number and password combination provided is not valid"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,86 +105,88 @@ function LoginPage() {
           background-color: #fbf3f3 !important;
         }
       `}</style>
-      
+
       <div id="midpart">
         <div className="cupcake-candle">
-          <img 
-            src="/images/new-images/cupcake-candle.jpg" 
-            alt="cupcake-background" 
-            style={{width: '70%', height: '70%'}} 
+          <img
+            src="/images/new-images/cupcake-candle.jpg"
+            alt="cupcake-background"
+            width="70%"
+            height="70%"
           />
         </div>
-        
+
         <div className="container login-container">
           <div className="col-md-4 col-sm-6 col-xs-12">
-            <div className="sectionTitle">
-              Login
-            </div>
-            
+
+            <div className="sectionTitle">Login</div>
+
             <div className="sectionContent">
+              <div className="form-group">Username</div>
+
               <div className="form-group">
-                Username
-              </div>
-              <div className="form-group">
-                <input 
-                  id="Username"
-                  className="form-control numeric" 
-                  type="text" 
-                  maxLength="10" 
+                <input
+                  className="form-control numeric"
+                  type="text"
+                  maxLength="10"
                   placeholder="Your Mobile No"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={mobile}
+                  readOnly={showPassword}
+                  onChange={(e) => setMobile(e.target.value)}
                   onKeyPress={allowOnlyNumbers}
                 />
-                {usernameError && <div className="error-text">{usernameError}</div>}
+                {mobileError && (
+                  <div className="error-text">{mobileError}</div>
+                )}
               </div>
-              
+
               {showPassword && (
-                <div id="PasswordSection">
+                <>
+                  <div className="form-group">Password</div>
                   <div className="form-group">
-                    Password
-                  </div>
-                  <div className="form-group">
-                    <input 
-                      id="Password"
-                      className="form-control" 
-                      type="password" 
+                    <input
+                      className="form-control"
+                      type="password"
                       placeholder="Your Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    {passwordError && <div className="error-text">{passwordError}</div>}
+                    {passwordError && (
+                      <div className="error-text">{passwordError}</div>
+                    )}
                   </div>
-                </div>
+                </>
               )}
             </div>
-            
+
             {!showPassword ? (
-              <div id="ContinueButtonSection" className="buttonSection">
-                <button 
-                  id="ContinueBtn"
-                  className="primary-btn" 
+              <div className="buttonSection">
+                <button
+                  className="primary-btn"
                   onClick={handleContinue}
+                  disabled={loading}
                 >
                   CONTINUE
                 </button>
               </div>
             ) : (
-              <div id="LoginButtonSection">
+              <>
                 <div className="buttonSection">
-                  <button 
-                    id="LoginBtn"
-                    className="primary-btn" 
+                  <button
+                    className="primary-btn"
                     onClick={handleLogin}
+                    disabled={loading}
                   >
                     LOG IN
                   </button>
                 </div>
+
                 <div className="buttonSection forgot-password-link">
                   <Link to="/forgot-password">Forgot Password?</Link>
                 </div>
-              </div>
+              </>
             )}
+
           </div>
         </div>
       </div>

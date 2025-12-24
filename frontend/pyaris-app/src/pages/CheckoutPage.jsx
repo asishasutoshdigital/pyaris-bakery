@@ -1,168 +1,239 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCartStore } from '../store/useStore';
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useCartStore } from "../store/useStore";
 
 function CheckoutPage() {
-  const navigate = useNavigate();
   const { cart, getTotal } = useCartStore();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address1: '',
-    address2: '',
-    city: '',
-    pincode: ''
-  });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [deliveryType, setDeliveryType] = useState("pickup");
+  const [outlet, setOutlet] = useState("SELECT OUTLET");
+  const [name, setName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("CHOOSE YOUR TIME");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Implement order placement logic
-    alert('Order placement functionality to be implemented');
-  };
+  useEffect(() => {
+    document.documentElement.style.backgroundColor = "#fbf3f3";
+    document.body.style.backgroundColor = "#fbf3f3";
+  }, []);
 
-  if (cart.length === 0) {
-    return (
-      <div className="container py-5 text-center">
-        <h2>Your cart is empty</h2>
-        <button className="btn btn-primary mt-3" onClick={() => navigate('/products')}>
-          Browse Products
-        </button>
-      </div>
+  const subtotal = getTotal();
+
+  /* ---------- PLACE ORDER ---------- */
+  const placeOrder = (mode) => {
+    if (!date || time === "CHOOSE YOUR TIME") {
+      Swal.fire("Please choose date & time", "", "error");
+      return;
+    }
+
+    Swal.fire(
+      "Order Placed",
+      mode === "COD" ? "Cash On Delivery" : "Online Payment",
+      "success"
     );
-  }
+  };
 
   return (
-    <div className="checkout-page">
-      <div className="container py-4">
-        <h1 className="mb-4">Checkout</h1>
-        
-        <div className="row">
-          <div className="col-md-8">
-            <div className="card mb-4">
-              <div className="card-body">
-                <h4>Delivery Information</h4>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label">Full Name *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="row">
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">Email *</label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">Phone *</label>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <label className="form-label">Address Line 1 *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="address1"
-                      value={formData.address1}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="mb-3">
-                    <label className="form-label">Address Line 2</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="address2"
-                      value={formData.address2}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  
-                  <div className="row">
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">City *</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">Pincode *</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="pincode"
-                        value={formData.pincode}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <button type="submit" className="btn btn-success btn-lg w-100">
-                    Place Order
-                  </button>
-                </form>
-              </div>
+    <div id="midpart" className="container justify-center">
+      <div className="col-md-12 checkout-container">
+
+        {/* 1. DELIVERY TYPE */}
+        <div className="snSectionTitle">1. Choose Delivery Type</div>
+
+        <div className="col-md-12 checkout-section-container">
+
+          <div className="form-group col-md-12 row">
+            <input
+              type="radio"
+              checked={deliveryType === "pickup"}
+              onChange={() => setDeliveryType("pickup")}
+            />{" "}
+            <b>Pickup From Outlet</b>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Choose Outlet <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-5">
+              <select
+                className="form-control"
+                value={outlet}
+                onChange={(e) => setOutlet(e.target.value)}
+              >
+                <option>SELECT OUTLET</option>
+                            <option >BBSR-BARAMUNDA</option>
+                            <option >BBSR-SUM HOSPITAL</option>
+                            <option >BBSR-VIVEKANANDA MARG</option>
+                            <option >BBSR-BOMIKHAL</option>
+                            <option >BBSR-SAILASHREE VIHAR</option>
+                            <option >BBSR-SAHEED NAGAR</option>
+                            <option >BBSR-JAGAMARA</option>
+                            <option >BBSR-JANPATH</option>
+                            <option >BBSR-JHARPADA</option>
+                            <option >CTC-CDA</option>
+                            <option >CTC-NAYASARAK</option>
+                            <option >CTC-COLLEGESQUARE</option>
+                            <option >CTC-SEC6 CDA</option>
+                            <option >BAM-GANDHI NAGAR</option>
+                            <option >BALESWAR-STATION ROAD</option>
+                            <option >JAJPUR-SURYANSH</option>
+                            <option >BAM-ASKAROAD</option>
+              </select>
             </div>
           </div>
-          
-          <div className="col-md-4">
-            <div className="card">
-              <div className="card-body">
-                <h4>Order Summary</h4>
-                <hr />
-                {cart.map((item) => (
-                  <div key={item.id} className="d-flex justify-content-between mb-2">
-                    <span>{item.menuName} x {item.quantity}</span>
-                    <span>₹ {(parseFloat(item.sellPrice) * item.quantity).toFixed(2)}</span>
-                  </div>
-                ))}
-                <hr />
-                <div className="d-flex justify-content-between mb-3">
-                  <strong>Total:</strong>
-                  <strong>₹ {getTotal().toFixed(2)}</strong>
-                </div>
-              </div>
+
+          <div className="form-group col-md-12 row">
+            <input
+              type="radio"
+              checked={deliveryType === "home"}
+              onChange={() => setDeliveryType("home")}
+            />{" "}
+            <b>Home Delivery / Edit Address</b>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Receiver Name <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-5">
+              <input
+                className="form-control"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Address Line 1 <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-5">
+              <input
+                className="form-control"
+                value={address1}
+                onChange={(e) => setAddress1(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">Address Line 2</div>
+            <div className="col-md-5">
+              <input
+                className="form-control"
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              City <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-5">
+              <input
+                className="form-control"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Pincode <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-5">
+              <input
+                className="form-control numeric"
+                maxLength="6"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
+              />
             </div>
           </div>
         </div>
+
+        {/* 3. PAYMENT REVIEW */}
+        <div className="snSectionTitle">3. Payment Review</div>
+
+        <div className="col-md-12 checkout-section-container">
+          <div className="col-md-4 cartTotalBox">
+            TOTAL CART ITEMS : {cart.length}
+          </div>
+          <div className="col-md-4 cartTotalBox">
+            SUB TOTAL : Rs {subtotal.toFixed(0)}
+          </div>
+          <div className="col-md-4 cartTotalBox">
+            TOTAL : Rs {subtotal.toFixed(0)}
+          </div>
+        </div>
+
+        {/* 4. DATE & PAYMENT */}
+        <div className="snSectionTitle">
+          4. Choose Date & Payment Mode
+        </div>
+
+        <div className="col-md-12 checkout-section-container">
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Choose Date <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-6">
+              <input
+                type="date"
+                className="form-control"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-12 row">
+            <div className="col-md-3 checkout-details-title">
+              Choose Time <span className="requiredStar">*</span>
+            </div>
+            <div className="col-md-6">
+              <select
+                className="form-control"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+              >
+                <option>CHOOSE YOUR TIME</option>
+                <option>9AM-12PM</option>
+                <option>12PM-3PM</option>
+                <option>3PM-6PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="col-md-12 cart-inner-container justify-center">
+            <div className="col-md-5 col-sm-12">
+              <button
+                className="rounded-btn red-btn"
+                onClick={() => placeOrder("COD")}
+              >
+                CASH ON DELIVERY
+              </button>
+            </div>
+            <div className="col-md-5 col-sm-12">
+              <button
+                className="rounded-btn red-btn"
+                onClick={() => placeOrder("ONLINE")}
+              >
+                MAKE ONLINE PAYMENT
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

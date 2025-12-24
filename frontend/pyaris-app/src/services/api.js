@@ -44,11 +44,13 @@ export const paymentAPI = {
 
 // Auth API
 export const authAPI = {
+  checkUser: (data) => api.post('/auth/check-user', data),
   login: (data) => api.post('/auth/login', data),
   register: (data) => api.post('/auth/register', data),
   forgotPassword: (data) => api.post('/auth/forgot-password', data),
   logout: () => api.post('/auth/logout'),
 };
+
 
 // Customer API
 export const customerAPI = {
